@@ -1,0 +1,161 @@
+{% extends 'hospital/doctor_base.html' %}
+{% block content %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+  .timeline-wrapper {
+    padding: 36px;
+    max-width: 860px;
+  }
+
+  .page-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f2d22;
+    margin-bottom: 4px;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: #6b7c74;
+    margin-bottom: 36px;
+    text-align: left;
+  }
+
+  .timeline {
+    position: relative;
+    padding: 0;
+    list-style: none;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #1a7f5a, #e0ede7);
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  .timeline-dot {
+    flex-shrink: 0;
+    width: 50px; height: 50px;
+    background: linear-gradient(135deg, #1a7f5a, #22a674);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    box-shadow: 0 4px 14px rgba(26,127,90,0.3);
+    z-index: 1;
+    position: relative;
+  }
+
+  .timeline-body {
+    flex: 1;
+    background: white;
+    border-radius: 16px;
+    padding: 22px 24px;
+    border: 1px solid #e0ede7;
+    box-shadow: 0 3px 16px rgba(15,45,34,0.06);
+    margin-top: 8px;
+  }
+
+  .timeline-date {
+    font-family: 'Sora', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #6b7c74;
+    margin-bottom: 8px;
+  }
+
+  .timeline-diagnosis {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f2d22;
+    margin-bottom: 12px;
+  }
+
+  .prescription-box {
+    background: #f3f8f5;
+    border-left: 3px solid #1a7f5a;
+    padding: 12px 16px;
+    border-radius: 0 10px 10px 0;
+    margin: 10px 0;
+  }
+
+  .prescription-box .presc-label {
+    font-family: 'Sora', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #4a6356;
+    margin-bottom: 5px;
+  }
+
+  .prescription-box p {
+    font-size: 13.5px;
+    color: #c0392b;
+    font-weight: 600;
+    margin: 0;
+    text-align: left;
+  }
+
+  .doctor-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #6b7c74;
+    font-style: italic;
+    margin-top: 10px;
+  }
+
+  .doctor-tag i { color: #1a7f5a; }
+
+  @media (max-width: 600px) {
+    .timeline-wrapper { padding: 20px 14px; }
+    .timeline::before { left: 20px; }
+    .timeline-dot { width: 42px; height: 42px; font-size: 15px; }
+  }
+</style>
+
+<div class="timeline-wrapper">
+  <h1 class="page-title">Medical Journey</h1>
+  <p class="page-subtitle">{{patient.get_name}} — Complete treatment timeline</p>
+
+  <div class="timeline">
+    {% for record in medicine_history %}
+    <div class="timeline-item">
+      <div class="timeline-dot">
+        <i class="fa fa-medkit"></i>
+      </div>
+      <div class="timeline-body">
+        <div class="timeline-date">{{ record.date }}</div>
+        <div class="timeline-diagnosis">{{ record.symptoms }}</div>
+        <div class="prescription-box">
+          <div class="presc-label">Prescribed Medicine</div>
+          <p>{{ record.medicine }}</p>
+        </div>
+        <div class="doctor-tag">
+          <i class="fa fa-user-md"></i> Dr. {{ record.doctorName }}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

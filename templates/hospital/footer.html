@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    .site-footer {
+      background: #0f2d22;
+      padding: 40px 40px 28px;
+      border-top: 1px solid rgba(0, 229, 160, 0.12);
+      position: relative;
+      z-index: 10;
+      clear: both;
+      width: 100%;
+      display: block;
+    }
+
+    .site-footer .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-brand-name {
+      font-family: 'Sora', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .footer-brand-tagline {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .footer-divider-line {
+      width: 100%;
+      max-width: 420px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .footer-social-links {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .footer-social-links a {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .footer-social-links a:hover {
+      background: rgba(0, 229, 160, 0.15);
+      color: #00e5a0;
+      border-color: rgba(0, 229, 160, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .footer-copy {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11.5px;
+      color: rgba(255, 255, 255, 0.28);
+      text-align: center;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    /* Override any global p styling that might misplace the footer text */
+    .site-footer p {
+      text-align: center;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-brand-name">ZyDoc</div>
+      <div class="footer-brand-tagline">AI-Powered Healthcare</div>
+    </div>
+
+    <div class="footer-social-links">
+      <a href="/contactus#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="/contactus#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      <a href="/contactus#" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="/contactus#" title="Twitter"><i class="fab fa-twitter"></i></a>
+    </div>
+
+    <div class="footer-divider-line"></div>
+
+    <p class="footer-copy">Made in India &nbsp;·&nbsp; Copyright &copy; 2020 PMS</p>
+  </div>
+</footer>
+
+</html>

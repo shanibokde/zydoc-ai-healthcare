@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Awaiting Approval | ZyDoc</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(160deg, #f0fff8 0%, #e8f5f0 40%, #ddeef8 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .approval-page {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+
+    .approval-card {
+      background: white;
+      border-radius: 22px;
+      padding: 60px 52px;
+      text-align: center;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(15,45,34,0.1);
+      animation: fadeIn 0.6s ease both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .approval-icon {
+      width: 90px; height: 90px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+      box-shadow: 0 8px 24px rgba(245,158,11,0.3);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(245,158,11,0.3); }
+      50% { transform: scale(1.05); box-shadow: 0 12px 32px rgba(245,158,11,0.45); }
+    }
+
+    .approval-icon i {
+      font-size: 36px;
+      color: white;
+    }
+
+    .approval-card h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #0f2d22;
+      margin-bottom: 8px;
+    }
+
+    .approval-card .greeting {
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      color: #1a7f5a;
+      font-weight: 600;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .approval-card p {
+      color: #6b7c74;
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 0;
+      text-align: center;
+    }
+
+    .status-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 28px 0;
+      text-align: left;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 16px;
+      background: #f3f8f5;
+      border-radius: 12px;
+      border: 1px solid #e0ede7;
+    }
+
+    .step-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .step-dot.done { background: #1a7f5a; }
+    .step-dot.active {
+      background: #fbbf24;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    .step-dot.pending { background: #d6ece3; }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .step-text {
+      font-size: 13px;
+      color: #2d4a3e;
+      font-weight: 500;
+    }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(to right, #1a7f5a, #e0ede7);
+      border-radius: 2px;
+      margin: 24px auto;
+    }
+
+    .btn-logout {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #1a7f5a, #22a674);
+      color: white;
+      padding: 13px 32px;
+      border-radius: 50px;
+      font-family: 'Sora', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 14px rgba(26,127,90,0.3);
+    }
+
+    .btn-logout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(26,127,90,0.4);
+      color: white;
+      text-decoration: none;
+    }
+
+    a:link { text-decoration: none; }
+  </style>
+</head>
+
+<body>
+  {% include "hospital/navbar.html" %}
+
+  <div class="approval-page">
+    <div class="approval-card">
+      <div class="approval-icon">
+        <i class="fas fa-clock"></i>
+      </div>
+      <div class="greeting">Hello, {{request.user.first_name}}!</div>
+      <h1>Account Under Review</h1>
+
+      <div class="status-steps">
+        <div class="step">
+          <div class="step-dot done"></div>
+          <div class="step-text">Account created successfully</div>
+        </div>
+        <div class="step">
+          <div class="step-dot active"></div>
+          <div class="step-text">Profile review in progress...</div>
+        </div>
+        <div class="step">
+          <div class="step-dot pending"></div>
+          <div class="step-text">Account activation pending</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <p>Our team is reviewing your profile. Your account will be confirmed soon. Please check back later.</p>
+      <br>
+      <a href="/logout" class="btn-logout">
+        <i class="fas fa-sign-out-alt"></i> Logout For Now
+      </a>
+    </div>
+  </div>
+
+  {% include "hospital/footer.html" %}
+</body>
+</html>

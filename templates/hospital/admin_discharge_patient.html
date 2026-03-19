@@ -1,0 +1,121 @@
+{% extends 'hospital/admin_base.html' %}
+{% block content %}
+
+<style>
+  .page-header { margin-bottom: 24px; }
+  .page-header h2 { font-size: 1.5rem; font-weight: 700; color: #1a2332; margin-bottom: 4px; }
+  .page-header p { color: #6b7c93; font-size: 0.88rem; text-align: left; }
+
+  .data-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+
+  .data-card-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .data-card-header h6 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a2332;
+    margin: 0;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .data-card-header h6::before {
+    content: '';
+    display: inline-block;
+    width: 4px; height: 18px;
+    background: #f7971e;
+    border-radius: 4px;
+  }
+
+  .modern-table { width: 100%; border-collapse: collapse; }
+  .modern-table thead tr { background: #f8fafc; }
+  .modern-table thead th {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: #6b7c93;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+  }
+  .modern-table tbody tr { border-bottom: 1px solid #f0f4f8; transition: background 0.15s; }
+  .modern-table tbody tr:last-child { border-bottom: none; }
+  .modern-table tbody tr:hover { background: #fffdf7; }
+  .modern-table tbody td { padding: 13px 20px; font-size: 0.875rem; color: #2d3748; vertical-align: middle; }
+  .modern-table tbody td strong { font-weight: 600; color: #1a2332; }
+
+  .btn-discharge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 16px;
+    background: #fff8e6;
+    color: #d97706;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-discharge:hover {
+    background: #d97706;
+    color: #fff;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(217,119,6,0.3);
+  }
+</style>
+
+<div class="page-header">
+  <h2>Discharge Patient</h2>
+  <p>Discharge admitted patients from the hospital system.</p>
+</div>
+
+<div class="data-card">
+  <div class="data-card-header">
+    <h6>Discharge Patient</h6>
+  </div>
+  <div class="table-responsive">
+    <table class="modern-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Symptoms</th>
+          <th>Mobile</th>
+          <th class="text-center">Discharge</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in patients %}
+        <tr>
+          <td><strong>{{ p.get_name }}</strong></td>
+          <td>{{ p.symptoms }}</td>
+          <td>{{ p.mobile }}</td>
+          <td class="text-center">
+            <a class="btn-discharge" href="{% url 'discharge-patient' p.id %}">
+              <i class="fas fa-sign-out-alt"></i> Discharge
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content %}

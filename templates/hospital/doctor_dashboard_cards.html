@@ -1,0 +1,103 @@
+<style>
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .stat-card.card-red::before    { background: linear-gradient(90deg, #ff6b6b, #ff8e53); }
+  .stat-card.card-orange::before { background: linear-gradient(90deg, #f7971e, #ffd200); }
+  .stat-card.card-blue::before   { background: linear-gradient(90deg, #3b7dd8, #00c6fb); }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  }
+
+  .stat-left .stat-number {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #1a2332;
+    line-height: 1;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .stat-left .stat-label {
+    font-size: 0.82rem;
+    color: #6b7c93;
+    font-weight: 500;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .stat-right .stat-icon {
+    width: 58px; height: 58px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+  }
+
+  .stat-card.card-red    .stat-icon { background: #fff1f0; color: #ff4d4d; }
+  .stat-card.card-orange .stat-icon { background: #fff8e6; color: #f7971e; }
+  .stat-card.card-blue   .stat-icon { background: #eff4ff; color: #3b7dd8; }
+
+  @media (max-width: 768px) {
+    .stats-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="stats-grid">
+  <div class="stat-card card-red">
+    <div class="stat-left">
+      <div class="stat-number">{{appointmentcount}}</div>
+      <div class="stat-label">Your Appointments</div>
+    </div>
+    <div class="stat-right">
+      <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+    </div>
+  </div>
+
+  <div class="stat-card card-orange">
+    <div class="stat-left">
+      <div class="stat-number">{{patientcount}}</div>
+      <div class="stat-label">Patients Under You</div>
+    </div>
+    <div class="stat-right">
+      <div class="stat-icon"><i class="fas fa-user-injured"></i></div>
+    </div>
+  </div>
+
+  <div class="stat-card card-blue">
+    <div class="stat-left">
+      <div class="stat-number">{{patientdischarged}}</div>
+      <div class="stat-label">Total Discharged</div>
+    </div>
+    <div class="stat-right">
+      <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+    </div>
+  </div>
+</div>

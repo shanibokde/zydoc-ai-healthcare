@@ -1,0 +1,148 @@
+{% extends 'hospital/patient_base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+  .book-wrapper {
+    padding: 36px;
+    max-width: 680px;
+  }
+
+  .page-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f2d22;
+    margin-bottom: 4px;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: #6b7c74;
+    margin-bottom: 28px;
+    text-align: left;
+  }
+
+  .form-card {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(15,45,34,0.08);
+    border: 1px solid #e0ede7;
+  }
+
+  .form-card-header {
+    background: linear-gradient(135deg, #1a7f5a, #22a674);
+    padding: 22px 28px;
+  }
+
+  .form-card-header h5 {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    margin: 0;
+    letter-spacing: 0.3px;
+  }
+
+  .form-card-header p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+    margin: 3px 0 0;
+    text-align: left;
+  }
+
+  .form-card-body {
+    padding: 28px;
+  }
+
+  .field-label {
+    font-family: 'Sora', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #4a6356;
+    margin-bottom: 7px;
+    display: block;
+  }
+
+  .form-card-body .form-control {
+    border-radius: 10px;
+    border: 1.5px solid #d6ece3;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #0f2d22;
+    background: #f8fbf9;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 18px;
+  }
+
+  .form-card-body .form-control:focus {
+    border-color: #1a7f5a;
+    box-shadow: 0 0 0 3px rgba(26,127,90,0.1);
+    background: #fff;
+    outline: none;
+  }
+
+  .btn-book {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #1a7f5a, #22a674);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 6px;
+    box-shadow: 0 4px 14px rgba(26,127,90,0.3);
+  }
+
+  .btn-book:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(26,127,90,0.4);
+  }
+
+  @media (max-width: 600px) {
+    .book-wrapper { padding: 20px 16px; }
+  }
+</style>
+
+{% if message %}
+<script>
+  var a = "{{message}}";
+  alert(a);
+</script>
+{% endif %}
+
+<div class="book-wrapper">
+  <h1 class="page-title">Book Appointment</h1>
+  <p class="page-subtitle">Fill in the details to schedule a new appointment</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-card">
+      <div class="form-card-header">
+        <h5>Appointment Details</h5>
+        <p>Provide your symptoms and select a doctor</p>
+      </div>
+      <div class="form-card-body">
+        <label class="field-label">Description / Symptoms</label>
+        {% render_field appointmentForm.description class="form-control" placeholder="Describe your symptoms or reason for visit..." %}
+
+        <label class="field-label">Select Doctor</label>
+        {% render_field appointmentForm.doctorId class="form-control" %}
+
+        <button type="submit" class="btn-book">Confirm Booking</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock content %}

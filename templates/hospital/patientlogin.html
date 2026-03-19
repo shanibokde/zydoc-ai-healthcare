@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+{% load widget_tweaks %}
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Patient Login | ZyDoc</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(160deg, #f0fff8 0%, #e8f5f0 40%, #ddeef8 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .login-page {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px 40px;
+    }
+
+    .login-card {
+      background: white;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(15,45,34,0.1);
+      width: 100%;
+      max-width: 440px;
+      animation: slideUp 0.5s ease both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-header {
+      background: linear-gradient(135deg, #1a7f5a, #22a674);
+      padding: 36px 36px 28px;
+      text-align: center;
+    }
+
+    .login-header .icon-wrap {
+      width: 60px; height: 60px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      border: 2px solid rgba(255,255,255,0.25);
+    }
+
+    .login-header .icon-wrap i {
+      font-size: 24px;
+      color: white;
+    }
+
+    .login-header h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
+      margin: 0 0 4px;
+    }
+
+    .login-header p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+      margin: 0;
+    }
+
+    .login-body {
+      padding: 32px 36px;
+    }
+
+    .field-label {
+      font-family: 'Sora', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #4a6356;
+      margin-bottom: 7px;
+      display: block;
+    }
+
+    .login-body .form-control {
+      border-radius: 10px;
+      border: 1.5px solid #d6ece3;
+      padding: 12px 16px;
+      font-size: 14px;
+      color: #0f2d22;
+      background: #f8fbf9;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 18px;
+      width: 100%;
+    }
+
+    .login-body .form-control:focus {
+      border-color: #1a7f5a;
+      box-shadow: 0 0 0 3px rgba(26,127,90,0.1);
+      background: white;
+      outline: none;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #1a7f5a, #22a674);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 14px rgba(26,127,90,0.3);
+      margin-top: 4px;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(26,127,90,0.4);
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #6b7c74;
+    }
+
+    .login-footer a {
+      color: #1a7f5a;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .login-footer a:hover { text-decoration: underline; }
+
+    a:link { text-decoration: none; }
+  </style>
+</head>
+
+<body>
+  {% include "hospital/navbar.html" %}
+
+  <div class="login-page">
+    <form method="post" style="width:100%; max-width:440px;">
+      {% csrf_token %}
+      <div class="login-card">
+        <div class="login-header">
+          <div class="icon-wrap">
+            <i class="fas fa-user-injured"></i>
+          </div>
+          <h2>Patient Login</h2>
+          <p>Access your health portal</p>
+        </div>
+        <div class="login-body">
+          <label class="field-label">Username</label>
+          {% render_field form.username class="form-control" placeholder="Enter your username" %}
+
+          <label class="field-label">Password</label>
+          {% render_field form.password class="form-control" placeholder="Enter your password" %}
+
+          <button type="submit" class="btn-login">Sign In</button>
+
+          <div class="login-footer">
+            Don't have an account? <a href="/patientsignup">Register here</a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  {% include "hospital/footer.html" %}
+</body>
+</html>

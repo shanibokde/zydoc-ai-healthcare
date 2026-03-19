@@ -1,0 +1,754 @@
+{% extends 'hospital/homebase.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+    /* ── RESET & BASE ── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    /* ── HERO SECTION ── */
+    .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.62)), url('{% static "images/bg.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        min-height: 86vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 80px;
+        background: linear-gradient(to bottom, transparent, #f3f8f5);
+        pointer-events: none;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+        padding: 0 24px;
+        animation: heroIn 0.8s ease both;
+    }
+
+    @keyframes heroIn {
+        from { opacity: 0; transform: translateY(28px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(0, 229, 160, 0.15);
+        border: 1px solid rgba(0, 229, 160, 0.35);
+        color: #00e5a0;
+        font-family: 'Sora', sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 6px 16px;
+        border-radius: 30px;
+        margin-bottom: 20px;
+    }
+
+    .hero-eyebrow::before {
+        content: '';
+        width: 7px; height: 7px;
+        background: #00e5a0;
+        border-radius: 50%;
+        animation: blink 1.8s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.3; }
+    }
+
+    .hero-title {
+        font-family: 'Sora', sans-serif;
+        font-weight: 800;
+        font-size: 3.4rem;
+        line-height: 1.15;
+        margin-bottom: 18px;
+        text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+        letter-spacing: -1.5px;
+    }
+
+    .hero-subtitle {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.78);
+        line-height: 1.65;
+        margin-bottom: 0;
+    }
+
+    /* ── ROLE CARDS SECTION ── */
+    .roles-section {
+        background: #f3f8f5;
+        padding: 80px 0 90px;
+        position: relative;
+        z-index: 1;
+        clear: both;
+        width: 100%;
+        display: block;
+    }
+
+    .roles-section-label {
+        font-family: 'Sora', sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #1a7f5a;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .roles-section-title {
+        font-family: 'Sora', sans-serif;
+        font-size: 30px;
+        font-weight: 700;
+        color: #0f2d22;
+        text-align: center;
+        margin-bottom: 8px;
+    }
+
+    .roles-section-sub {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 14px;
+        color: #6b7c74;
+        text-align: center;
+        margin-bottom: 52px;
+    }
+
+    /* ── ROLE CARD GRID ── */
+    .role-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .role-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px 28px 32px;
+        text-align: center;
+        border: 1.5px solid #e0ede7;
+        box-shadow: 0 4px 20px rgba(15,45,34,0.06);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+        display: block;
+    }
+
+    .role-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 4px;
+        border-radius: 20px 20px 0 0;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .role-card-admin::before  { background: linear-gradient(90deg, #1a7f5a, #22a674); }
+    .role-card-doctor::before { background: linear-gradient(90deg, #1a56a0, #2979d8); }
+    .role-card-patient::before{ background: linear-gradient(90deg, #7c3aed, #a855f7); }
+
+    .role-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 40px rgba(15,45,34,0.12);
+        border-color: transparent;
+        text-decoration: none;
+    }
+
+    .role-card:hover::before { opacity: 1; }
+
+    .role-card-avatar-ring {
+        width: 94px;
+        height: 94px;
+        border-radius: 50%;
+        padding: 3px;
+        margin: 0 auto 20px;
+    }
+
+    .role-card-admin  .role-card-avatar-ring { background: linear-gradient(135deg, #1a7f5a, #22a674); }
+    .role-card-doctor .role-card-avatar-ring { background: linear-gradient(135deg, #1a56a0, #2979d8); }
+    .role-card-patient .role-card-avatar-ring{ background: linear-gradient(135deg, #7c3aed, #a855f7); }
+
+    .role-card-avatar-ring img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid white;
+        background: white;
+    }
+
+    .role-card-name {
+        font-family: 'Sora', sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #6b7c74;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .role-card-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 28px;
+        border-radius: 50px;
+        font-family: 'Sora', sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-decoration: none;
+        transition: all 0.2s;
+        border: 2px solid;
+    }
+
+    .role-card-admin  .role-card-btn { color: #1a7f5a; border-color: #1a7f5a; background: transparent; }
+    .role-card-admin:hover  .role-card-btn { background: #1a7f5a; color: white; }
+    .role-card-doctor .role-card-btn { color: #1a56a0; border-color: #1a56a0; background: transparent; }
+    .role-card-doctor:hover .role-card-btn { background: #1a56a0; color: white; }
+    .role-card-patient .role-card-btn { color: #7c3aed; border-color: #7c3aed; background: transparent; }
+    .role-card-patient:hover .role-card-btn { background: #7c3aed; color: white; }
+
+    @media (max-width: 768px) {
+        .role-cards-grid { grid-template-columns: 1fr; max-width: 340px; }
+        .hero-title { font-size: 2.2rem; }
+    }
+
+    /* ── CHATBOT WIDGET ── */
+    .zydus-chat-launcher {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        filter: drop-shadow(0 8px 20px rgba(26,127,90,0.3));
+        transition: filter 0.3s;
+    }
+
+    .zydus-chat-launcher:hover {
+        filter: drop-shadow(0 10px 26px rgba(26,127,90,0.45));
+    }
+
+    .launcher-bubble {
+        background: white;
+        padding: 12px 18px;
+        border-radius: 14px;
+        margin-right: 14px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 500;
+        font-size: 13.5px;
+        color: #2d4a3e;
+        border: 1px solid #e0ede7;
+        line-height: 1.5;
+    }
+
+    .launcher-icon-circle {
+        width: 62px;
+        height: 62px;
+        background: linear-gradient(135deg, #1a7f5a, #22a674);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 28px;
+        box-shadow: 0 6px 20px rgba(26,127,90,0.4);
+        transition: transform 0.3s;
+    }
+
+    .zydus-chat-launcher:hover .launcher-icon-circle {
+        transform: scale(1.06);
+    }
+
+    .zydus-chat-window {
+        position: fixed;
+        bottom: 110px;
+        right: 30px;
+        width: 350px;
+        height: 70vh;
+        background: white;
+        border-radius: 20px;
+        display: none;
+        flex-direction: column;
+        z-index: 10000;
+        overflow: hidden;
+        border: 1px solid #e0ede7;
+        box-shadow: 0 20px 60px rgba(15,45,34,0.18);
+    }
+
+    .chat-header {
+        background: linear-gradient(135deg, #1a7f5a, #22a674);
+        color: white;
+        padding: 16px 20px;
+        flex-shrink: 0;
+    }
+
+    .chat-header h6 {
+        margin: 0;
+        font-family: 'Sora', sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .chat-body {
+        flex: 1;
+        padding: 18px;
+        overflow-y: auto;
+        background: #f8fbf9;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .msg {
+        padding: 11px 15px;
+        border-radius: 16px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 13.5px;
+        max-width: 82%;
+        line-height: 1.5;
+    }
+
+    .msg-bot {
+        background: white;
+        color: #2d4a3e;
+        align-self: flex-start;
+        border-bottom-left-radius: 3px;
+        border: 1px solid #e0ede7;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .msg-user {
+        background: linear-gradient(135deg, #1a7f5a, #22a674);
+        color: white;
+        align-self: flex-end;
+        border-bottom-right-radius: 3px;
+        box-shadow: 0 3px 12px rgba(26,127,90,0.25);
+    }
+
+    .result-overlay {
+        position: absolute;
+        top: 85px;
+        left: 0; right: 0; bottom: 0;
+        background: #ffffff !important;
+        z-index: 10005;
+        padding: 10px 20px;
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid #eee;
+    }
+
+    .result-scroll {
+        flex: 1;
+        overflow-y: auto;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .chat-footer {
+        padding: 14px;
+        border-top: 1px solid #e0ede7;
+        background: white;
+        flex-shrink: 0;
+    }
+
+    .chat-input-box {
+        display: flex;
+        background: #f3f8f5;
+        border-radius: 25px;
+        padding: 4px 14px;
+        align-items: center;
+        border: 1.5px solid #d6ece3;
+        transition: border-color 0.2s;
+    }
+
+    .chat-input-box:focus-within {
+        border-color: #1a7f5a;
+        background: white;
+    }
+
+    .chat-input-box input {
+        border: none;
+        background: transparent;
+        flex: 1;
+        padding: 9px;
+        outline: none;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 13px;
+        color: #0f2d22;
+    }
+
+    .send-btn {
+        background: linear-gradient(135deg, #1a7f5a, #22a674);
+        color: white;
+        border: none;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.2s;
+        flex-shrink: 0;
+    }
+
+    .send-btn:hover { transform: scale(1.08); }
+
+    .btn-book {
+        display: block;
+        background: linear-gradient(135deg, #1a7f5a, #22a674);
+        color: #ffffff !important;
+        text-align: center;
+        padding: 13px 20px;
+        margin: 18px 0 10px 0;
+        border-radius: 10px;
+        font-family: 'Sora', sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none !important;
+        box-shadow: 0 4px 14px rgba(26,127,90,0.3);
+        transition: all 0.3s ease;
+        border: none;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-book:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(26,127,90,0.4);
+        color: #ffffff !important;
+    }
+
+    .precaution-list {
+        background: #f3f8f5;
+        border-left: 4px solid #1a7f5a;
+        padding: 14px;
+        border-radius: 0 8px 8px 0;
+        margin-top: 14px;
+        list-style-type: none;
+        padding-left: 20px;
+    }
+
+    .precaution-list li {
+        margin-bottom: 7px;
+        position: relative;
+        padding-left: 14px;
+        color: #2d4a3e;
+        font-size: 13px;
+    }
+
+    .precaution-list li::before {
+        content: "•";
+        color: #1a7f5a;
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+    }
+
+    @media (max-width: 768px) {
+        .zydus-chat-window { width: calc(100vw - 40px); right: 20px; }
+        .launcher-bubble { display: none; }
+    }
+</style>
+
+<!-- ── HERO ── -->
+<div class="hero-section">
+    <div class="hero-content">
+        <div class="hero-eyebrow">AI-Powered Healthcare</div>
+        <h1 class="hero-title">You'll Love the Way<br>We Care for You.</h1>
+        <p class="hero-subtitle">Talk to our AI Medical Assistant for instant guidance.</p>
+    </div>
+</div>
+
+<!-- ── ROLE CARDS ── -->
+<section class="roles-section">
+    <div class="container">
+        <div class="roles-section-label">Get Started</div>
+        <h2 class="roles-section-title">Select Your Role</h2>
+        <p class="roles-section-sub">Continue to your personalised portal</p>
+
+        <div class="role-cards-grid">
+
+            <!-- ADMIN -->
+            <a href="/adminclick" class="role-card role-card-admin">
+                <div class="role-card-avatar-ring">
+                    <img src="{% static 'images/admin.png' %}" alt="Admin"
+                         onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#1a7f5a,#22a674);display:flex;align-items:center;justify-content:center;border:3px solid white\'><svg xmlns=\'http://www.w3.org/2000/svg\' width=\'38\' height=\'38\' fill=\'white\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z\'/></svg></div>'">
+                </div>
+                <span class="role-card-name">Admin</span>
+                <span class="role-card-btn">→ View</span>
+            </a>
+
+            <!-- DOCTOR -->
+            <a href="/doctorclick" class="role-card role-card-doctor">
+                <div class="role-card-avatar-ring">
+                    <img src="{% static 'images/doctor.png' %}" alt="Doctor"
+                         onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#1a56a0,#2979d8);display:flex;align-items:center;justify-content:center;border:3px solid white\'><svg xmlns=\'http://www.w3.org/2000/svg\' width=\'38\' height=\'38\' fill=\'white\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z\'/></svg></div>'">
+                </div>
+                <span class="role-card-name">Doctor</span>
+                <span class="role-card-btn">→ View</span>
+            </a>
+
+            <!-- PATIENT -->
+            <a href="/patientclick" class="role-card role-card-patient">
+                <div class="role-card-avatar-ring">
+                    <img src="{% static 'images/patient.jpg' %}" alt="Patient"
+                         onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a855f7);display:flex;align-items:center;justify-content:center;border:3px solid white\'><svg xmlns=\'http://www.w3.org/2000/svg\' width=\'38\' height=\'38\' fill=\'white\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z\'/></svg></div>'">
+                </div>
+                <span class="role-card-name">Patient</span>
+                <span class="role-card-btn">→ View</span>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── AI CHATBOT ── -->
+<div class="zydus-chat-launcher" onclick="toggleChat()">
+    <div class="launcher-bubble">Chat with AI Doctor <br> How may i help you today?</div>
+    <div class="launcher-icon-circle">
+        <i class="bi bi-chat-dots-fill" id="l-icon"></i>
+    </div>
+</div>
+
+<div class="zydus-chat-window" id="chatWindow">
+    <div class="chat-header"><h6 class="m-0">🏥 AI Doctor</h6></div>
+    <div class="chat-body" id="chatDisplay">
+        <!-- <div class="msg msg-bot">Welcome! I am your AI Medical Assistant. How can I help you today?</div>
+        <div class="msg msg-bot">Please enter your <b>Full Name</b> to begin.</div> -->
+    </div>
+
+    {% if result or booked_success %}
+    <div class="result-overlay" id="resOverlay">
+        <div class="result-scroll">
+            {% if booked_success %}
+                <div class="text-center p-3">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                    <h5 class="fw-bold mt-3">Booking Confirmed!</h5>
+                    <p class="small">Hello <b>{{ name }}</b>, your appointment with <b>{{ doctor }}</b> is set for <b>{{ date }}</b> at <b>{{ time }}</b>.</p>
+                    <button class="btn btn-secondary btn-sm w-100 mt-2" onclick="window.location.href='/'">New Session</button>
+                </div>
+
+            {% elif result.status == "emergency" %}
+                <h5 class="fw-bold text-danger mb-3">🚨 Emergency Alert</h5>
+                <div id="emergencyCard" class="card p-3 border-danger shadow-sm text-center mb-3">
+                    <p class="text-danger fw-bold mb-2">Critical Situation Detected</p>
+                    <button class="btn btn-danger w-100 fw-bold" onclick="handleEmergency('{{ result.name }}')">Proceed to Emergency</button>
+                </div>
+
+                <div id="emergencyStatus" class="d-none">
+                    <div class="alert alert-warning py-2 small mb-3 text-center">
+                        <b>{{ result.name }}</b> is being added to the emergency ward.
+                    </div>
+                    <div class="card p-3 border-danger shadow-sm mb-3">
+                        <h6 class="fw-bold text-danger text-center mb-1">Priority Appointment</h6>
+                        <p class="text-center small text-muted mb-3">Specialist: <b>Dr. Vikas Gupta</b></p>
+                        <form method="POST" action="{% url 'confirm_appointment' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="doctor_name" value="Dr. vikas gupta">
+                            <input type="hidden" name="appointment_date" value="{{ today_date }}">
+                            <input type="hidden" name="time_slot" value="IMMEDIATE (Emergency Queue)">
+                            <button type="submit" class="btn btn-danger btn-sm w-100 shadow-sm">Confirm Priority Booking</button>
+                        </form>
+                    </div>
+                </div>
+
+            {% elif result.status == "consultation" %}
+                <h5 class="fw-bold text-danger mb-3">Book Appointment</h5>
+                <div class="card p-3 border-primary shadow-sm mb-3">
+                    <p class="mb-1 text-primary text-center small">Recommended Specialist:</p>
+                    <h6 class="fw-bold text-center mb-3">{{ result.doctor_name }}</h6>
+                    <form method="POST" action="{% url 'confirm_appointment' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="doctor_name" value="{{ result.doctor_name }}">
+                        <div class="mb-2">
+                            <label class="small fw-bold">Select Date:</label>
+                            <input type="date" name="appointment_date" class="form-control form-control-sm" required min="{{ today_date }}">
+                        </div>
+                        <div class="mb-3">
+                                <label class="small fw-bold">Select Time Slot:</label>
+                                 <select name="time_slot" class="form-select form-select-sm" required>
+                                    <option value="" selected disabled>Choose a slot...</option>
+                                    <option value="09:00">Morning (9 AM - 12 PM)</option>
+                                    <option value="14:00">Afternoon (2 PM - 5 PM)</option>
+                                    <option value="18:00">Evening (6 PM - 9 PM)</option>
+                                 </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm w-100">Confirm Appointment</button>
+                        <button type="button" class="btn btn-secondary btn-sm w-100 mt-2" onclick="window.location.href='/'">New Session</button>
+                    </form>
+                </div>
+            {% elif result.status == "normal" %}
+                <h5 class="fw-bold text-danger mb-3">AI Analysis Result</h5>
+                <div class="card p-3 border-success text-center shadow-sm mb-3">
+                    <p class="mb-1 text-success fw-bold small">Generated Prescription</p>
+                    <h5 class="m-0">{{ result.medicine }}</h5>
+                </div>
+                <div class="alert alert-info py-2 small"><b>Medical Guidance:</b> {{ result.advice }}</div>
+                <button class="btn btn-secondary btn-sm w-100 mt-2" onclick="window.location.href='/'">New Session</button>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="chat-footer" id="chatFooter">
+        <form id="chatForm" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="name" id="h_name">
+            <input type="hidden" name="mobile" value="1234567890">
+            <input type="hidden" name="symptom1" id="h_s1">
+            <input type="hidden" name="symptom2" id="h_s2">
+            <div class="chat-input-box">
+                <input type="text" id="userInput" placeholder="What happens to you..." autocomplete="off">
+                <button type="submit" class="send-btn"><i class="bi bi-send-fill"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const win = document.getElementById('chatWindow');
+    const display = document.getElementById('chatDisplay');
+    const input = document.getElementById('userInput');
+    const lIcon = document.getElementById('l-icon');
+    const chatForm = document.getElementById('chatForm');
+    
+
+    // 1. Handle UI initialization (for existing results)
+    window.addEventListener('DOMContentLoaded', (event) => {
+        {% if result or booked_success %}
+            win.style.display = 'flex';
+            lIcon.className = 'bi bi-x-lg';
+            if(document.getElementById('chatFooter')) {
+                document.getElementById('chatFooter').style.display = 'none';
+            }
+        {% endif %}
+    });
+
+    // 2. Toggle Chat Window
+    function toggleChat() {
+        if(win.style.display === 'flex') {
+            win.style.display = 'none';
+            lIcon.className = 'bi bi-chat-dots-fill';
+        } else {
+            win.style.display = 'flex';
+            lIcon.className = 'bi bi-x-lg';
+            
+            // Trigger automatic greeting when first opened
+            if (display.children.length === 0 ) { 
+                fetchBotResponse("");
+            }
+        }
+    }
+
+    // 3. The New AI Logic (Replaces the step 1/2/3 logic)
+    chatForm.onsubmit = function(e) {
+        e.preventDefault(); // STOP the page from reloading
+        const val = input.value.trim();
+        if(!val) return false;
+
+        // Show User Bubble
+        appendBubble(val, 'msg-user');
+        input.value = '';
+
+        // Call your new API
+        fetchBotResponse(val);
+
+        return false;
+    };
+
+    
+    function fetchBotResponse(userMsg) {
+    // REMOVED: The logic that forced 'yes' to go to /chat-booking/
+    // We always go to chat-api because that is where the diagnostic engine lives.
+    const targetUrl = '/chat-api/';
+
+    fetch(`${targetUrl}?msg=${encodeURIComponent(userMsg)}`)
+        .then(response => response.json())
+        .then(data => {
+            appendBubble(data.response, 'msg-bot');
+            
+            // Auto-scroll to the bottom of the chat
+            display.scrollTop = display.scrollHeight;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            appendBubble("I'm having trouble connecting to the medical engine.", 'msg-bot');
+        });
+}
+
+    // 2. Execute the fetch
+    //function fetchBotResponse(userMsg) {
+    //let msgLower = userMsg.toLowerCase().trim();
+    
+    // Switch to the booking URL if they say "yes" or "book"
+    //let targetUrl = (msgLower === 'yes' || msgLower.includes('book')) 
+                    //? '/chat-booking/' 
+                    //: '/chat-api/';
+
+    //fetch(`${targetUrl}?msg=${encodeURIComponent(userMsg)}`)
+        //.then(response => response.json())
+        //.then(data => {
+            //appendBubble(data.response, 'msg-bot');
+        //});
+//}
+
+    //function fetchBotResponse(userMsg) {
+        // We use the 'chatbot_url' (chat-api/) we defined in urls.py
+        //fetch(`/chat-api/?msg=${encodeURIComponent(userMsg)}`)
+            //.then(response => response.json())
+            //.then(data => {
+                //appendBubble(data.response, 'msg-bot');
+            //})
+            //.catch(error => {
+                //console.error('Error:', error);
+                //appendBubble("I'm having trouble connecting to the AI. Please try again.", 'msg-bot');
+            //});
+    //}
+
+    function appendBubble(text, className) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `msg ${className}`;
+        msgDiv.innerHTML = text; // innerHTML allows <b> tags
+        display.appendChild(msgDiv);
+        display.scrollTop = display.scrollHeight;
+    }
+
+    function handleEmergency(userName) {
+        const card = document.getElementById('emergencyCard');
+        const status = document.getElementById('emergencyStatus');
+        if(card) card.style.display = 'none';
+        if(status) {
+            status.classList.remove('d-none');
+            status.style.display = 'block';
+        }
+    }
+</script>
+{% endblock content %}

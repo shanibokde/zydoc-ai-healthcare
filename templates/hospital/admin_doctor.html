@@ -1,0 +1,134 @@
+{% extends 'hospital/admin_base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .page-header {
+    margin-bottom: 28px;
+  }
+
+  .page-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a2332;
+    margin-bottom: 4px;
+  }
+
+  .page-header p {
+    color: #6b7c93;
+    font-size: 0.88rem;
+    text-align: left;
+  }
+
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+  }
+
+  .action-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 28px 24px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-decoration: none !important;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .action-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 0 0 16px 16px;
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.1);
+  }
+
+  .action-card:hover::after { opacity: 1; }
+
+  .action-card.blue   .icon-wrap { background: #eff4ff; color: #3b7dd8; }
+  .action-card.green  .icon-wrap { background: #ecfdf5; color: #059669; }
+  .action-card.yellow .icon-wrap { background: #fff8e6; color: #d97706; }
+  .action-card.pink   .icon-wrap { background: #fdf2f8; color: #db2777; }
+
+  .action-card.blue::after   { background: linear-gradient(90deg, #4099ff, #73b4ff); }
+  .action-card.green::after  { background: linear-gradient(90deg, #2ed8b6, #59e0c5); }
+  .action-card.yellow::after { background: linear-gradient(90deg, #FFB64D, #ffcb80); }
+  .action-card.pink::after   { background: linear-gradient(90deg, #FF5370, #ff869a); }
+
+  .icon-wrap {
+    width: 52px; height: 52px;
+    border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+  }
+
+  .action-card .card-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a2332;
+  }
+
+  .action-card .card-arrow {
+    margin-top: auto;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: gap 0.2s;
+  }
+
+  .action-card.blue   .card-arrow { color: #3b7dd8; }
+  .action-card.green  .card-arrow { color: #059669; }
+  .action-card.yellow .card-arrow { color: #d97706; }
+  .action-card.pink   .card-arrow { color: #db2777; }
+
+  .action-card:hover .card-arrow { gap: 9px; }
+</style>
+
+<div class="page-header">
+  <h2>Doctor Management</h2>
+  <p>Manage doctor records, registrations, approvals and specialisations.</p>
+</div>
+
+<div class="action-grid">
+  <a href="/admin-view-doctor" class="action-card blue">
+    <div class="icon-wrap"><i class="fas fa-user-nurse"></i></div>
+    <div class="card-label">Doctor Record</div>
+    <div class="card-arrow">View All <i class="fas fa-arrow-right"></i></div>
+  </a>
+
+  <a href="/admin-add-doctor" class="action-card green">
+    <div class="icon-wrap"><i class="fas fa-user-plus"></i></div>
+    <div class="card-label">Register Doctor</div>
+    <div class="card-arrow">Add New <i class="fas fa-arrow-right"></i></div>
+  </a>
+
+  <a href="/admin-approve-doctor" class="action-card yellow">
+    <div class="icon-wrap"><i class="fas fa-check-circle"></i></div>
+    <div class="card-label">Approve Doctor</div>
+    <div class="card-arrow">Review <i class="fas fa-arrow-right"></i></div>
+  </a>
+
+  <a href="/admin-view-doctor-specialisation" class="action-card pink">
+    <div class="icon-wrap"><i class="fas fa-user-md"></i></div>
+    <div class="card-label">Doctor Specialisation</div>
+    <div class="card-arrow">Browse <i class="fas fa-arrow-right"></i></div>
+  </a>
+</div>
+
+{% endblock content %}

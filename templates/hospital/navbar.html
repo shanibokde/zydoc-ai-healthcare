@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <style type="text/css">
+    .navbar {
+      background: rgba(15, 45, 34, 0.96) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 0 2rem;
+      height: 66px;
+      z-index: 2000 !important;
+      border-bottom: 1px solid rgba(0, 229, 160, 0.12);
+    }
+
+    .dhanshu-logo {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0px 0px 6px rgba(0, 229, 160, 0.4));
+      transition: all 0.3s ease;
+    }
+
+    .dhanshu-logo:hover {
+      transform: scale(1.04);
+      filter: drop-shadow(0px 0px 10px rgba(0, 229, 160, 0.7));
+    }
+
+    .navbar-brand {
+      margin-left: 0;
+    }
+
+    .navbar-brand:hover {
+      text-decoration: none;
+    }
+
+    /* Center nav links */
+    .nav-center-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-center-links .nav-link {
+      color: rgba(255, 255, 255, 0.75) !important;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 6px 14px !important;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      margin: 0 !important;
+    }
+
+    .nav-center-links .nav-link:hover {
+      color: #ffffff !important;
+      background: rgba(0, 229, 160, 0.1);
+    }
+
+    /* Right nav links */
+    .nav-right-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-right-links .nav-link {
+      color: rgba(255, 255, 255, 0.7) !important;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 14px !important;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      margin: 0 !important;
+    }
+
+    .nav-right-links .nav-link:hover {
+      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .nav-right-links .nav-link.contact-link {
+      color: #00e5a0 !important;
+      border: 1px solid rgba(0, 229, 160, 0.3);
+    }
+
+    .nav-right-links .nav-link.contact-link:hover {
+      background: rgba(0, 229, 160, 0.12);
+      border-color: rgba(0, 229, 160, 0.5);
+    }
+
+    body {
+      padding-top: 66px;
+    }
+
+    .navbar-toggler {
+      border-color: rgba(0, 229, 160, 0.4);
+    }
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 229, 160, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+      <a href="/" class="navbar-brand">
+        <img src="{% static 'images/zydoc2.svg' %}" alt="ZyDoc Logo" class="dhanshu-logo">
+      </a>
+
+      <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav mx-auto nav-center-links">
+          <a href="/adminclick" class="nav-item nav-link">Admin</a>
+          <a href="/doctorclick" class="nav-item nav-link">Doctor</a>
+          <a href="/patientclick" class="nav-item nav-link">Patient</a>
+        </div>
+
+        <div class="navbar-nav ml-auto nav-right-links">
+          <a href="/aboutus" class="nav-item nav-link">About Us</a>
+          <a href="/contactus" class="nav-item nav-link contact-link">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</body>
+</html>

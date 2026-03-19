@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, #0f1c2e 0%, #1a2e4a 60%, #0d2137 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .role-page {
+      text-align: center;
+      padding: 40px 20px;
+      width: 100%;
+    }
+
+    .role-heading {
+      margin-bottom: 48px;
+    }
+
+    .role-heading h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .role-heading p {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    .role-heading .heading-line {
+      width: 40px; height: 3px;
+      background: #00c896;
+      border-radius: 4px;
+      margin: 16px auto 0;
+    }
+
+    .roles-grid {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .role-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 36px 30px 28px;
+      width: 200px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .role-card:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.25);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+      text-decoration: none;
+    }
+
+    .role-card .role-img {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,0.15);
+    }
+
+    .role-card .role-name {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.6);
+      font-weight: 600;
+    }
+
+    .role-card .role-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #fff !important;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .role-card.admin-card   .role-btn { background: rgba(59,125,216,0.3); }
+    .role-card.doctor-card  .role-btn { background: rgba(0,200,150,0.3); }
+    .role-card.patient-card .role-btn { background: rgba(255,107,107,0.3); }
+
+    .role-card:hover .role-btn {
+      background: rgba(255,255,255,0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="role-page">
+    <div class="role-heading">
+      <h1>Welcome to ZyDoc</h1>
+      <p>Select your role to continue to the portal</p>
+      <div class="heading-line"></div>
+    </div>
+
+    <div class="roles-grid">
+      <a href="/adminclick" class="role-card admin-card">
+        <img src="{% static 'images/admin.png' %}" alt="Admin" class="role-img">
+        <div class="role-name">Admin</div>
+        <span class="role-btn"><i class="fas fa-arrow-right" style="font-size:10px;"></i> View</span>
+      </a>
+
+      <a href="/doctorclick" class="role-card doctor-card">
+        <img src="{% static 'images/doctor.png' %}" alt="Doctor" class="role-img">
+        <div class="role-name">Doctor</div>
+        <span class="role-btn"><i class="fas fa-arrow-right" style="font-size:10px;"></i> View</span>
+      </a>
+
+      <a href="/patientclick" class="role-card patient-card">
+        <img src="{% static 'images/patient.jpg' %}" alt="Patient" class="role-img">
+        <div class="role-name">Patient</div>
+        <span class="role-btn"><i class="fas fa-arrow-right" style="font-size:10px;"></i> View</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

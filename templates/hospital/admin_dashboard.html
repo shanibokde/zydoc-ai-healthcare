@@ -1,0 +1,176 @@
+{% extends 'hospital/admin_base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .section-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a2332;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 4px; height: 18px;
+    background: var(--accent, #00c896);
+    border-radius: 4px;
+  }
+
+  .data-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .data-card-header {
+    padding: 16px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .data-card-body {
+    overflow-x: auto;
+  }
+
+  .modern-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .modern-table thead tr {
+    background: #f8fafc;
+  }
+
+  .modern-table thead th {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: #6b7c93;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+  }
+
+  .modern-table tbody tr {
+    border-bottom: 1px solid #f0f4f8;
+    transition: background 0.15s;
+  }
+
+  .modern-table tbody tr:last-child { border-bottom: none; }
+
+  .modern-table tbody tr:hover { background: #fafcff; }
+
+  .modern-table tbody td {
+    padding: 13px 20px;
+    font-size: 0.875rem;
+    color: #2d3748;
+    vertical-align: middle;
+  }
+
+  .modern-table tbody td strong {
+    font-weight: 600;
+    color: #1a2332;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+
+  .pill-green  { background: #ecfdf5; color: #059669; }
+  .pill-blue   { background: #eff4ff; color: #3b7dd8; }
+  .pill-orange { background: #fff8e6; color: #d97706; }
+</style>
+
+{% include 'hospital/admin_dashboard_cards.html' %}
+
+<div class="row">
+  <div class="col-md-5">
+    <div class="data-card">
+      <div class="data-card-header">
+        <span class="section-title">Recent Doctors</span>
+      </div>
+      <div class="data-card-body">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Mobile</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for d in doctors %}
+            <tr>
+              <td><strong>{{d.get_name}}</strong></td>
+              <td>{{d.department}}</td>
+              <td>{{d.mobile}}</td>
+              <td>
+                {% if d.status %}
+                <span class="pill pill-blue">Permanent</span>
+                {% else %}
+                <span class="pill pill-orange">On Hold</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-7">
+    <div class="data-card">
+      <div class="data-card-header">
+        <span class="section-title">Recent Patients</span>
+      </div>
+      <div class="data-card-body">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Symptoms</th>
+              <th>Mobile</th>
+              <th>Address</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in patients %}
+            <tr>
+              <td><strong>{{p.get_name}}</strong></td>
+              <td>{{p.symptoms}}</td>
+              <td>{{p.mobile}}</td>
+              <td>{{p.address}}</td>
+              <td>
+                {% if p.status %}
+                <span class="pill pill-green">Admitted</span>
+                {% else %}
+                <span class="pill pill-orange">On Hold</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

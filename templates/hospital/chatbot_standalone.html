@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zydus AI | Modern Triage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        /* 1. Page Background (Your Homepage) */
+        body { 
+            background: #f8f9fa; 
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0; padding: 0;
+            height: 100vh;
+        }
+
+        /* 2. THE FLOATING BUTTON (Bottom Right - Fixed) */
+        .zydus-chat-launcher {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999; /* Higher than anything else */
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .launcher-bubble {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-right: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-weight: 600;
+            color: #444;
+            white-space: nowrap;
+        }
+
+        .launcher-icon-circle {
+            width: 70px;
+            height: 70px;
+            background: #ed0000; /* Zydus Red */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            box-shadow: 0 8px 25px rgba(237, 0, 0, 0.4);
+        }
+
+        .zydus-chat-launcher:hover { transform: scale(1.05); }
+
+        /* 3. THE CHAT WINDOW (Hidden by default) */
+        .zydus-chat-window {
+            position: fixed;
+            bottom: 115px;
+            right: 30px;
+            width: 350px;
+            height: 70vh;
+            max-height: 600px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+            display: none; /* Triggers via JS */
+            flex-direction: column;
+            z-index: 10000;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        /* Red Header */
+        .chat-header {
+            background: #ed0000;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-header h6 { margin: 0; font-weight: 700; }
+
+        /* Chat Messages Area */
+        .chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #fdfdfd;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .msg { padding: 12px 16px; border-radius: 18px; font-size: 14px; max-width: 80%; line-height: 1.4; }
+        .msg-bot { background: #f1f1f1; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg-user { background: #ed0000; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+
+        /* Input Footer */
+        .chat-footer { padding: 15px; border-top: 1px solid #eee; background: white; }
+        .chat-input-box {
+            display: flex;
+            background: #f5f5f5;
+            border-radius: 25px;
+            padding: 5px 15px;
+            align-items: center;
+        }
+        .chat-input-box input { border: none; background: transparent; flex: 1; padding: 10px; outline: none; }
+        .send-btn { background: #ed0000; color: white; border: none; width: 35px; height: 35px; border-radius: 50%; }
+
+        /* Result View Overlay */
+        .result-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 10001; padding: 25px;
+            display: flex; flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h1>Welcome to Zydus Hospital</h1>
+        <p class="text-muted">Your health, our priority. Look at the bottom right to start a medical consultation.</p>
+    </div>
+
+    <div class="zydus-chat-launcher" onclick="toggleChat()">
+        <div class="launcher-bubble" id="l-text">Chat with AI Doctor</div>
+        <div class="launcher-icon-circle">
+            <i class="bi bi-chat-heart-fill" id="l-icon"></i>
+        </div>
+    </div>
+
+    <div class="zydus-chat-window" id="chatWindow">
+        <div class="chat-header">
+            <i class="bi bi-chevron-left" style="cursor:pointer" onclick="toggleChat()"></i>
+            <h6>🏥 AI Clinical Triage</h6>
+        </div>
+
+        <div class="chat-body" id="chatDisplay">
+            <div class="msg msg-bot">Welcome! I am your AI Medical Assistant. How can I help you today?</div>
+            <div class="msg msg-bot">Please enter your <b>Full Name</b> to begin.</div>
+        </div>
+
+        {% if result %}
+        <div class="result-overlay">
+            <div class="d-flex justify-content-between mb-3">
+                <h5 class="fw-bold">AI Result</h5>
+                <button class="btn-close" onclick="this.parentElement.parentElement.style.display='none'"></button>
+            </div>
+            
+            <div class="alert alert-info py-2 small"><b>Note:</b> {{ result.advice }}</div>
+
+            {% if result.status == "normal" %}
+                <div class="card p-3 border-success text-center">
+                    <p class="mb-1 text-success fw-bold">Prescription Generated</p>
+                    <strong>{{ result.medicine }}</strong>
+                </div>
+            {% elif result.status == "consultation" %}
+                <div class="card p-3 border-primary">
+                    <p class="mb-1 text-primary">Suggested Specialist:</p>
+                    <strong>{{ result.doctor_name }}</strong>
+                    <form method="POST" action="{% url 'confirm_appointment' %}/" class="mt-3">
+                        {% csrf_token %}
+                        <input type="hidden" name="doctor_name" value="{{ result.doctor_name }}">
+                        <button class="btn btn-primary btn-sm w-100">Book Appointment</button>
+                    </form>
+                </div>
+            {% elif result.status == "emergency" %}
+                <div class="card p-3 bg-danger text-white text-center">
+                    <h6 class="fw-bold">CRITICAL CARE REQUIRED</h6>
+                    <a href="/emergency-admission/{{ result.name }}/" class="btn btn-light btn-sm mt-2">Admit Immediately</a>
+                </div>
+            {% endif %}
+
+            <button class="btn btn-outline-secondary btn-sm mt-auto" onclick="window.location.href='{% url 'chatbot_url' %}'">New Session</button>
+        </div>
+        {% endif %}
+
+        <div class="chat-footer">
+            <form id="chatForm" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="name" id="h_name">
+                <input type="hidden" name="mobile" value="1234567890">
+                <input type="hidden" name="symptom1" id="h_s1">
+                <input type="hidden" name="symptom2" id="h_s2">
+
+                <div class="chat-input-box">
+                    <input type="text" id="userInput" placeholder="Ask me anything..." autocomplete="off">
+                    <button type="submit" class="send-btn"><i class="bi bi-send-fill"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let step = 1;
+        const win = document.getElementById('chatWindow');
+        const display = document.getElementById('chatDisplay');
+        const input = document.getElementById('userInput');
+        const lIcon = document.getElementById('l-icon');
+
+        // If Django just gave us a result, open the chat automatically
+        {% if result %}
+        win.style.display = 'flex';
+        {% endif %}
+
+        function toggleChat() {
+            if(win.style.display === 'flex') {
+                win.style.display = 'none';
+                lIcon.className = 'bi bi-chat-heart-fill';
+            } else {
+                win.style.display = 'flex';
+                lIcon.className = 'bi bi-x-lg';
+            }
+        }
+
+        document.getElementById('chatForm').onsubmit = function(e) {
+            const val = input.value.trim();
+            if(!val) return false;
+
+            // Show User Message
+            const uMsg = document.createElement('div');
+            uMsg.className = 'msg msg-user';
+            uMsg.innerText = val;
+            display.appendChild(uMsg);
+            input.value = '';
+            display.scrollTop = display.scrollHeight;
+
+            if(step === 1) {
+                document.getElementById('h_name').value = val;
+                setTimeout(() => {
+                    const bMsg = document.createElement('div');
+                    bMsg.className = 'msg msg-bot';
+                    bMsg.innerHTML = `Nice to meet you, <b>${val}</b>. What symptoms are you having?`;
+                    display.appendChild(bMsg);
+                    display.scrollTop = display.scrollHeight;
+                }, 500);
+                step = 2;
+                return false;
+            } else if(step === 2) {
+                document.getElementById('h_s1').value = val;
+                setTimeout(() => {
+                    const bMsg = document.createElement('div');
+                    bMsg.className = 'msg msg-bot';
+                    bMsg.innerText = `I see. Please describe the intensity or how long this has been happening.`;
+                    display.appendChild(bMsg);
+                    display.scrollTop = display.scrollHeight;
+                }, 500);
+                step = 3;
+                return false;
+            } else {
+                document.getElementById('h_s2').value = val;
+                // Final Submit to your views.py
+                return true;
+            }
+        }
+    </script>
+</body>
+</html>

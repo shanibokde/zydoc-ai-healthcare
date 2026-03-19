@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+{% load widget_tweaks %}
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Patient Registration | ZyDoc</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(160deg, #f0fff8 0%, #e8f5f0 40%, #ddeef8 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .signup-page {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 80px 20px 40px;
+    }
+
+    .signup-card {
+      background: white;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(15,45,34,0.1);
+      width: 100%;
+      max-width: 820px;
+      animation: slideUp 0.5s ease both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .signup-header {
+      background: linear-gradient(135deg, #1a7f5a, #22a674);
+      padding: 28px 36px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .signup-header .icon-wrap {
+      width: 52px; height: 52px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(255,255,255,0.25);
+      flex-shrink: 0;
+    }
+
+    .signup-header .icon-wrap i { font-size: 22px; color: white; }
+
+    .signup-header h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: white;
+      margin: 0 0 3px;
+    }
+
+    .signup-header p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+      margin: 0;
+    }
+
+    .signup-body {
+      padding: 32px 36px 36px;
+    }
+
+    .section-divider {
+      font-family: 'Sora', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #9ab3a8;
+      margin: 22px 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e0ede7;
+    }
+
+    .field-label {
+      font-family: 'Sora', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #4a6356;
+      margin-bottom: 7px;
+      display: block;
+    }
+
+    .form-control {
+      border-radius: 10px !important;
+      border: 1.5px solid #d6ece3 !important;
+      padding: 12px 16px !important;
+      font-size: 14px !important;
+      color: #0f2d22 !important;
+      background: #f8fbf9 !important;
+      transition: border-color 0.2s, box-shadow 0.2s !important;
+      margin-bottom: 0 !important;
+      width: 100%;
+    }
+
+    .form-control:focus {
+      border-color: #1a7f5a !important;
+      box-shadow: 0 0 0 3px rgba(26,127,90,0.1) !important;
+      background: white !important;
+      outline: none !important;
+    }
+
+    .form-group { margin-bottom: 18px; }
+
+    .btn-register {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #1a7f5a, #22a674);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 14px rgba(26,127,90,0.3);
+      margin-top: 8px;
+    }
+
+    .btn-register:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(26,127,90,0.4);
+    }
+
+    .signup-footer {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 13px;
+      color: #6b7c74;
+    }
+
+    .signup-footer a {
+      color: #1a7f5a;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .signup-footer a:hover { text-decoration: underline; }
+
+    a:link { text-decoration: none; }
+  </style>
+</head>
+
+<body>
+  {% include "hospital/navbar.html" %}
+
+  <div class="signup-page">
+    <form method="post" enctype="multipart/form-data" style="width:100%; max-width:820px;">
+      {% csrf_token %}
+      <div class="signup-card">
+        <div class="signup-header">
+          <div class="icon-wrap">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div>
+            <h2>Register to ZyDoc</h2>
+            <p>Create your patient account to get started</p>
+          </div>
+        </div>
+
+        <div class="signup-body">
+          <div class="section-divider">Personal Information</div>
+          <div class="row">
+            <div class="col-md-6">
+              <label class="field-label">First Name</label>
+              <div class="form-group">
+                {% render_field userForm.first_name class="form-control" placeholder="First Name" %}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">Last Name</label>
+              <div class="form-group">
+                {% render_field userForm.last_name class="form-control" placeholder="Last Name" %}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">Username</label>
+              <div class="form-group">
+                {% render_field userForm.username class="form-control" placeholder="Choose a username" %}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">Password</label>
+              <div class="form-group">
+                {% render_field userForm.password class="form-control" placeholder="Create a password" %}
+              </div>
+            </div>
+          </div>
+
+          <div class="section-divider">Medical & Contact Details</div>
+          <div class="row">
+            <div class="col-md-6">
+              <label class="field-label">Address</label>
+              <div class="form-group">
+                {% render_field patientForm.address class="form-control" placeholder="Your address" %}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">Mobile Number</label>
+              <div class="form-group">
+                {% render_field patientForm.mobile class="form-control" pattern="[6789][0-9]{9}" placeholder="10-digit mobile number" %}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">Symptoms</label>
+              <div class="form-group">
+                {% render_field patientForm.symptoms class="form-control" placeholder="Describe your symptoms" %}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">Appointment Date & Time</label>
+              <div class="form-group">
+                <input type="datetime-local" name="appointment_date" id="appointment_date" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">Assign Doctor</label>
+              <div class="form-group">
+                {% render_field patientForm.assignedDoctorId class="form-control" %}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">Profile Picture</label>
+              <div class="form-group">
+                {% render_field patientForm.profile_pic class="form-control" %}
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-register">Create Account</button>
+
+          <div class="signup-footer">
+            Already have an account? <a href="/patientlogin">Login here</a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var today = new Date().toISOString().split('T')[0];
+      document.getElementById('appointment_date').setAttribute('min', today);
+    });
+  </script>
+
+  {% include "hospital/footer.html" %}
+</body>
+</html>

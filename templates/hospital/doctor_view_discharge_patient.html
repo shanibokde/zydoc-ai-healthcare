@@ -1,0 +1,125 @@
+{% extends 'hospital/doctor_base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+  .page-header { margin-bottom: 24px; }
+  .page-header h2 { font-size: 1.5rem; font-weight: 700; color: #1a2332; margin-bottom: 4px; }
+  .page-header p { color: #6b7c93; font-size: 0.88rem; text-align: left; }
+
+  .data-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+
+  .data-card-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .data-card-header h6 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a2332;
+    margin: 0;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .data-card-header h6::before {
+    content: '';
+    display: inline-block;
+    width: 4px; height: 18px;
+    background: #db2777;
+    border-radius: 4px;
+  }
+
+  .modern-table { width: 100%; border-collapse: collapse; }
+  .modern-table thead tr { background: #f8fafc; }
+  .modern-table thead th {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: #6b7c93;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+  }
+  .modern-table tbody tr { border-bottom: 1px solid #f0f4f8; transition: background 0.15s; }
+  .modern-table tbody tr:last-child { border-bottom: none; }
+  .modern-table tbody tr:hover { background: #fafcff; }
+  .modern-table tbody td { padding: 13px 20px; font-size: 0.875rem; color: #2d3748; vertical-align: middle; }
+  .modern-table tbody td strong { font-weight: 600; color: #1a2332; }
+
+  .date-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    background: #f0f4f8;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    color: #4a5568;
+    font-weight: 500;
+  }
+
+  .empty-row td {
+    text-align: center;
+    padding: 48px 20px;
+    color: #a0aec0;
+    font-size: 0.9rem;
+  }
+</style>
+
+<div class="page-header">
+  <h2>Discharge Archives</h2>
+  <p>Review completed cases and records for discharged patients.</p>
+</div>
+
+<div class="data-card">
+  <div class="data-card-header">
+    <h6>Your Discharged Patient List</h6>
+  </div>
+  <div class="table-responsive">
+    <table class="modern-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Admit Date</th>
+          <th>Release Date</th>
+          <th>Symptoms</th>
+          <th>Mobile</th>
+          <th>Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in dischargedpatients %}
+        <tr>
+          <td><strong>{{p.patientName}}</strong></td>
+          <td>
+            <span class="date-chip"><i class="fas fa-calendar-alt" style="font-size:10px;color:#3b7dd8;"></i> {{p.admitDate}}</span>
+          </td>
+          <td>
+            <span class="date-chip"><i class="fas fa-calendar-check" style="font-size:10px;color:#059669;"></i> {{p.releaseDate}}</span>
+          </td>
+          <td class="text-muted">{{p.symptoms}}</td>
+          <td>{{p.mobile}}</td>
+          <td style="font-size:0.82rem;">{{p.address}}</td>
+        </tr>
+        {% empty %}
+        <tr class="empty-row">
+          <td colspan="6">No discharged patients found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content %}

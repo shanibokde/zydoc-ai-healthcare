@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Patient Management System</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, #0f1c2e 0%, #1a2e4a 60%, #0d2137 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wait-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .wait-card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 56px 52px;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    }
+
+    .wait-icon {
+      width: 80px; height: 80px;
+      background: linear-gradient(135deg, rgba(247,151,30,0.2), rgba(247,151,30,0.05));
+      border: 1px solid rgba(247,151,30,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      color: #f7971e;
+      margin: 0 auto 28px;
+      box-shadow: 0 8px 24px rgba(247,151,30,0.15);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(247,151,30,0.15); }
+      50%       { transform: scale(1.05); box-shadow: 0 12px 32px rgba(247,151,30,0.28); }
+    }
+
+    .wait-card h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 20px;
+      letter-spacing: -0.3px;
+    }
+
+    .wait-card .lead {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.95rem;
+      line-height: 1.75;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .wait-divider {
+      width: 40px; height: 3px;
+      background: #f7971e;
+      border-radius: 4px;
+      margin: 24px auto;
+    }
+
+    .wait-note {
+      color: rgba(255,255,255,0.3);
+      font-size: 0.82rem;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .btn-logout {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: #f7971e;
+      color: #fff !important;
+      border: none;
+      padding: 13px 36px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      text-decoration: none;
+      box-shadow: 0 4px 18px rgba(247,151,30,0.35);
+    }
+
+    .btn-logout:hover {
+      background: #e5881b;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(247,151,30,0.4);
+      text-decoration: none;
+      color: #fff !important;
+    }
+  </style>
+</head>
+
+<body>
+  {% include "hospital/navbar.html" %}
+
+  <div class="wait-wrapper">
+    <div class="wait-card">
+      <div class="wait-icon"><i class="fas fa-hourglass-half"></i></div>
+      <h1>Hello {{request.user.first_name}}</h1>
+      <p class="lead">Your Account is not approved till now <br><br>Our Team is checking your profile <br><br> Soon your Account will be confirmed !!!</p>
+      <div class="wait-divider"></div>
+      <p class="wait-note">Check Later</p>
+      <a class="btn-logout" href="/logout" role="button">
+        <i class="fas fa-sign-out-alt"></i> Logout For Now
+      </a>
+    </div>
+  </div>
+
+  {% include "hospital/footer.html" %}
+</body>
+</html>

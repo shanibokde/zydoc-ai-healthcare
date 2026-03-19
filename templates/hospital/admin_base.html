@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ZyDoc | AI Healthcare</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{% static '/style.css' %}">
+
+  <style>
+    :root {
+      --sidebar-bg: #0f1c2e;
+      --sidebar-width: 255px;
+      --topbar-bg: #ffffff;
+      --topbar-height: 64px;
+      --accent: #00c896;
+      --accent-blue: #3b7dd8;
+      --text-primary: #1a2332;
+      --text-muted: #6b7c93;
+      --bg-main: #f0f4f8;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --sidebar-text: rgba(255,255,255,0.75);
+      --sidebar-text-active: #ffffff;
+      --sidebar-item-hover: rgba(255,255,255,0.07);
+      --sidebar-item-active: rgba(0,200,150,0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-main);
+      color: var(--text-primary);
+      padding-left: var(--sidebar-width);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    a { text-decoration: none; }
+    a:hover { text-decoration: none; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: var(--sidebar-bg);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(0,200,150,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .sidebar-brand {
+      padding: 22px 24px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-brand .brand-icon {
+      width: 38px; height: 38px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: #fff;
+      box-shadow: 0 4px 12px rgba(0,200,150,0.35);
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand .brand-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+
+    .sidebar-brand .brand-text span { color: var(--accent); }
+
+    /* Admin Avatar */
+    .sidebar-avatar {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .sidebar-avatar .avatar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-avatar img {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+    }
+
+    .sidebar-avatar .avatar-info .role {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .sidebar-avatar .avatar-info .name {
+      font-size: 0.92rem;
+      color: #fff;
+      font-weight: 500;
+      margin-top: 1px;
+    }
+
+    /* Nav */
+    .sidebar-nav {
+      flex: 1;
+      padding: 16px 12px;
+      overflow-y: auto;
+    }
+
+    .sidebar-nav::-webkit-scrollbar { width: 3px; }
+    .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+    .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+    .nav-section-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.3);
+      padding: 8px 12px 6px;
+      margin-top: 6px;
+    }
+
+    .sidebar-nav ul {
+      list-style: none;
+      padding: 0; margin: 0;
+    }
+
+    .sidebar-nav ul li a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: var(--sidebar-text) !important;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      margin-bottom: 2px;
+      position: relative;
+    }
+
+    .sidebar-nav ul li a i {
+      width: 20px;
+      text-align: center;
+      font-size: 0.95rem;
+      opacity: 0.8;
+      flex-shrink: 0;
+    }
+
+    .sidebar-nav ul li a:hover {
+      background: var(--sidebar-item-hover);
+      color: #fff !important;
+    }
+
+    .sidebar-nav ul li a:hover i { opacity: 1; }
+
+    .sidebar-nav ul li.active a {
+      background: var(--sidebar-item-active);
+      color: var(--accent) !important;
+      font-weight: 600;
+    }
+
+    .sidebar-nav ul li.active a i {
+      color: var(--accent);
+      opacity: 1;
+    }
+
+    .sidebar-nav ul li.active a::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 3px; height: 60%;
+      background: var(--accent);
+      border-radius: 0 3px 3px 0;
+    }
+
+    .sidebar-footer {
+      padding: 16px 12px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .sidebar-footer a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: rgba(255,255,255,0.5) !important;
+      font-size: 0.88rem;
+      transition: all 0.2s;
+    }
+
+    .sidebar-footer a:hover {
+      background: rgba(255,80,80,0.1);
+      color: #ff6b6b !important;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: var(--sidebar-width);
+      right: 0;
+      height: var(--topbar-height);
+      background: var(--topbar-bg);
+      border-bottom: 1px solid var(--border);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .topbar-left .page-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .topbar-left .breadcrumb-trail {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .topbar-badge {
+      position: relative;
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: var(--bg-main);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+    }
+
+    .topbar-badge:hover { background: var(--border); color: var(--text-primary); }
+
+    .topbar-badge .dot {
+      position: absolute;
+      top: 7px; right: 7px;
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: 2px solid #fff;
+    }
+
+    .topbar-divider {
+      width: 1px; height: 30px;
+      background: var(--border);
+    }
+
+    .topbar-admin {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .topbar-admin img {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+    }
+
+    .topbar-admin .admin-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .topbar-admin .admin-role {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      flex: 1;                    /* grow to fill all available space above footer */
+      padding-top: calc(var(--topbar-height) + 28px);
+      padding-left: 28px;
+      padding-right: 28px;
+      padding-bottom: 40px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--sidebar-bg);
+      padding: 20px 28px;
+      width: 100%;
+      flex-shrink: 0;             /* never shrink, always full height */
+    }
+
+    footer .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer .footer-copy {
+      color: rgba(255,255,255,0.3);
+      font-size: 0.78rem;
+      margin: 0;
+      text-align: left;
+    }
+
+    footer .social-links {
+      display: flex;
+      gap: 8px;
+    }
+
+    footer .social-links a {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    footer .social-links a:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      body { padding-left: 70px; }
+      :root { --sidebar-width: 70px; }
+      .sidebar-brand .brand-text,
+      .sidebar-avatar .avatar-info,
+      .sidebar-nav ul li a span,
+      .nav-section-label,
+      .sidebar-footer a span { display: none; }
+      .sidebar-nav ul li a { justify-content: center; padding: 14px; }
+      .sidebar-nav ul li a i { width: auto; margin: 0; }
+      .sidebar-avatar .avatar-wrap { justify-content: center; }
+      .sidebar-avatar img { width: 38px; height: 38px; }
+      .topbar { left: 70px; }
+    }
+
+    @media (max-width: 480px) {
+      body { padding-left: 0; }
+      :root { --sidebar-width: 0px; }
+      .sidebar { transform: translateX(-100%); }
+      .topbar { left: 0; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="fas fa-heartbeat"></i></div>
+      <span class="brand-text">Zy<span>Doc</span></span>
+    </div>
+
+    <div class="sidebar-avatar">
+      <div class="avatar-wrap">
+        <img src="{% static 'images/adminpropic.png' %}" alt="Admin">
+        <div class="avatar-info">
+          <div class="role">Administrator</div>
+          <div class="name">{{request.user.first_name}}</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main Menu</div>
+      <ul>
+        <li>
+          <a href="/admin-dashboard">
+            <i class="fas fa-th-large"></i><span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin-doctor">
+            <i class="fas fa-user-md"></i><span>Doctors</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin-patient">
+            <i class="fas fa-users"></i><span>Patients</span>
+          </a>
+        </li>
+        <li>
+          <a href="/admin-appointment">
+            <i class="fas fa-calendar-check"></i><span>Appointments</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="/logout">
+        <i class="fas fa-sign-out-alt"></i><span>Logout</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <a href="/admin-dashboard">
+        <img src="{% static 'images/zydoc2.svg' %}" alt="ZyDoc" style="height:32px; width:auto;">
+      </a>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-badge">
+        <i class="fas fa-bell"></i>
+        <span class="dot"></span>
+      </div>
+      <div class="topbar-divider"></div>
+      <div class="topbar-admin">
+        <img src="{% static 'images/adminpropic.png' %}" alt="Admin">
+        <div>
+          <div class="admin-name">{{request.user.first_name}}</div>
+          <div class="admin-role">Administrator</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    {% block content %}
+    {% endblock content %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">Made with ❤️ in India &nbsp;·&nbsp; Copyright &copy; 2020 PMS</span>
+      <div class="social-links">
+        <a href="/contactus#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="/contactus#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="/contactus#" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="/contactus#" title="Twitter"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

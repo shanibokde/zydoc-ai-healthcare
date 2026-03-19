@@ -1,0 +1,190 @@
+{% extends 'hospital/doctor_base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .page-header { margin-bottom: 24px; }
+  .page-header h2 { font-size: 1.5rem; font-weight: 700; color: #1a2332; margin-bottom: 4px; }
+  .page-header p { color: #6b7c93; font-size: 0.88rem; text-align: left; }
+
+  .data-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+
+  .data-card-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .data-card-header h6 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a2332;
+    margin: 0;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .data-card-header h6::before {
+    content: '';
+    display: inline-block;
+    width: 4px; height: 18px;
+    background: #e53e3e;
+    border-radius: 4px;
+  }
+
+  .modern-table { width: 100%; border-collapse: collapse; }
+  .modern-table thead tr { background: #f8fafc; }
+  .modern-table thead th {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: #6b7c93;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+  }
+  .modern-table tbody tr { border-bottom: 1px solid #f0f4f8; transition: background 0.15s; }
+  .modern-table tbody tr:last-child { border-bottom: none; }
+  .modern-table tbody tr:hover { background: #fff8f8; }
+  .modern-table tbody td { padding: 13px 20px; font-size: 0.875rem; color: #2d3748; vertical-align: middle; }
+  .modern-table tbody td strong { font-weight: 600; color: #1a2332; }
+
+  /* ── AVATAR ── */
+  .avatar-wrap {
+    width: 38px; height: 38px;
+    flex-shrink: 0;
+  }
+
+  .profile-img {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e2e8f0;
+    display: block;
+  }
+
+  .avatar-fallback {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+
+  .avatar-img-error .profile-img     { display: none; }
+  .avatar-img-error .avatar-fallback { display: flex; }
+
+  .av-0 { background: linear-gradient(135deg, #00c896, #00a87a); }
+  .av-1 { background: linear-gradient(135deg, #3b7dd8, #2563c7); }
+  .av-2 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .av-3 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+  .av-4 { background: linear-gradient(135deg, #ef4444, #dc2626); }
+  .av-5 { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+
+  .empty-row td {
+    text-align: center;
+    padding: 48px 20px;
+    color: #a0aec0;
+    font-size: 0.9rem;
+  }
+
+  .btn-delete {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: #fff1f0;
+    color: #e53e3e;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-delete:hover {
+    background: #e53e3e;
+    color: #fff;
+    text-decoration: none;
+  }
+</style>
+
+<div class="page-header">
+  <h2>Clear Appointments</h2>
+  <p>Remove cancelled or completed appointment slots from your active list.</p>
+</div>
+
+<div class="data-card">
+  <div class="data-card-header">
+    <h6>Delete Your Appointments</h6>
+  </div>
+  <div class="table-responsive">
+    <table class="modern-table">
+      <thead>
+        <tr>
+          <th>Patient Name</th>
+          <th>Picture</th>
+          <th>Description</th>
+          <th class="text-center">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a, p in appointments %}
+        <tr>
+          <td><strong>{{a.patientName}}</strong></td>
+          <td>
+            <div class="avatar-wrap" id="av-wrap-{{forloop.counter}}">
+              {% if p and p.profile_pic and p.profile_pic.name %}
+                <img src="{{p.profile_pic.url}}"
+                     alt="{{a.patientName}}"
+                     class="profile-img"
+                     onerror="document.getElementById('av-wrap-{{forloop.counter}}').classList.add('avatar-img-error')">
+              {% else %}
+                <img src="{% static 'images/default_user.png' %}"
+                     alt="{{a.patientName}}"
+                     class="profile-img"
+                     onerror="document.getElementById('av-wrap-{{forloop.counter}}').classList.add('avatar-img-error')">
+              {% endif %}
+              <div class="avatar-fallback">
+                {{a.patientName|slice:":1"|upper}}
+              </div>
+            </div>
+          </td>
+          <td class="text-muted">{{a.description}}</td>
+          <td class="text-center">
+            <a class="btn-delete" href="{% url 'delete-appointment' a.id %}">
+              <i class="fas fa-trash"></i> Delete
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr class="empty-row">
+          <td colspan="4">No appointments found to delete.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.avatar-fallback').forEach(function(el, i) {
+    el.classList.add('av-' + (i % 6));
+  });
+</script>
+
+{% endblock content %}

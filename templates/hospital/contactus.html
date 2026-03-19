@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Contact Us | ZyDoc AI Healthcare</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            background: #f3f8f5;
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+        }
+
+        .contact-wrapper {
+            padding: 60px 0 80px;
+        }
+
+        .contact-page-label {
+            font-family: 'Sora', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: #1a7f5a;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .contact-page-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 30px;
+            font-weight: 700;
+            color: #0f2d22;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .contact-page-sub {
+            font-size: 14px;
+            color: #6b7c74;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .contact-main-card {
+            background: white;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(15,45,34,0.1);
+            border: 1px solid #e0ede7;
+        }
+
+        /* ── LEFT PANEL ── */
+        .contact-info-panel {
+            background: linear-gradient(160deg, #0f2d22 0%, #1a7f5a 100%);
+            color: white;
+            padding: 52px 44px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 480px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-info-panel::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(0,229,160,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .contact-info-panel::after {
+            content: '';
+            position: absolute;
+            bottom: -40px; left: -40px;
+            width: 160px; height: 160px;
+            background: radial-gradient(circle, rgba(0,229,160,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .info-panel-heading h2 {
+            font-family: 'Sora', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .info-panel-heading p {
+            font-size: 13.5px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+            text-align: left;
+            margin: 0;
+        }
+
+        .info-items {
+            margin: 36px 0 0;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 22px;
+            gap: 16px;
+        }
+
+        .info-item .info-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(0, 229, 160, 0.15);
+            border: 1px solid rgba(0, 229, 160, 0.25);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00e5a0;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .info-item .info-text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.85);
+            font-weight: 500;
+        }
+
+        .social-section {
+            margin-top: auto;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-section p {
+            font-size: 11px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-links a {
+            width: 36px; height: 36px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .social-links a:hover {
+            background: rgba(0,229,160,0.15);
+            color: #00e5a0;
+            border-color: rgba(0,229,160,0.3);
+        }
+
+        /* ── RIGHT PANEL ── */
+        .contact-form-panel {
+            padding: 52px 48px;
+        }
+
+        .contact-form-panel h3 {
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 22px;
+            color: #0f2d22;
+            margin-bottom: 6px;
+        }
+
+        .contact-form-panel .form-subtitle {
+            font-size: 13px;
+            color: #6b7c74;
+            margin-bottom: 28px;
+            text-align: left;
+        }
+
+        /* Django form styling */
+        .form-container p {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.4rem;
+            text-align: left;
+        }
+
+        .form-container label {
+            font-family: 'Sora', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #4a6356;
+            margin-bottom: 7px;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="email"],
+        .form-container textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #d6ece3;
+            border-radius: 10px;
+            background: #f8fbf9;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            color: #0f2d22;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .form-container input:focus,
+        .form-container textarea:focus {
+            border-color: #1a7f5a;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(26, 127, 90, 0.1);
+        }
+
+        .form-container textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, #1a7f5a, #22a674);
+            border: none;
+            padding: 14px 28px;
+            font-family: 'Sora', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            width: 100%;
+            color: white;
+            box-shadow: 0 4px 14px rgba(26,127,90,0.3);
+            cursor: pointer;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(26,127,90,0.4);
+        }
+
+        .alert-success {
+            background: rgba(26,127,90,0.08);
+            border: 1px solid rgba(26,127,90,0.25);
+            color: #1a7f5a;
+            border-radius: 10px;
+            font-size: 13.5px;
+        }
+
+        @media (max-width: 768px) {
+            .contact-info-panel { padding: 32px 28px; min-height: auto; }
+            .contact-form-panel { padding: 32px 28px; }
+        }
+    </style>
+</head>
+
+<body>
+    {% include "hospital/navbar.html" %}
+
+    <div class="container contact-wrapper">
+        <div class="contact-page-label">Reach Out</div>
+        <h1 class="contact-page-title">Get in Touch</h1>
+        <p class="contact-page-sub">Have questions about ZyDoc? We'd love to hear from you.</p>
+
+        <div class="row contact-main-card no-gutters">
+
+            <div class="col-lg-5 contact-info-panel">
+                <div>
+                    <div class="info-panel-heading">
+                        <h2 style="margin-left: 10px;">Let's Talk</h2>
+                        <p style="margin-left: 10px;">Have questions about ZyDoc? We're here to help you manage your healthcare journey.</p>
+                    </div>
+                    <div class="info-items" style="margin-left: 10px;">
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-map-marker-alt" ></i></div>
+                            <div class="info-text">Sector 15, Tech Park, India</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
+                            <div class="info-text">+91 95721 81024</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="info-text">support@zydoc.com</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-section" style="margin-left: 10px;">
+                    <p>Follow Us</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7 contact-form-panel">
+                <h3 style="margin-left: 10px;">Send Feedback</h3>
+                <p class="form-subtitle" style="margin-left: 10px;">Fill out the form and we'll get back to you shortly.</p>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle mr-2" ></i> {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-container" style="margin-left: 10px;">
+                        {{ form.as_p }}
+                        <button type="submit" class="btn-send mt-2">
+                            Send Message &nbsp;<i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    {% include "hospital/footer.html" %}
+</body>
+</html>

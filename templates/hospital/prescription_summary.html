@@ -1,0 +1,42 @@
+{% extends "hospital/doctor_base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow border-0 text-center" style="border-radius: 15px;">
+        <div class="card-body p-5">
+            <div class="mb-4">
+                <i class="fas fa-check-circle fa-5x text-success"></i>
+            </div>
+            <h2 class="font-weight-bold">Prescription Saved Successfully!</h2>
+            <p class="text-muted">The medication has been added to the patient's permanent history.</p>
+            
+            <div class="row justify-content-center mt-4">
+                <div class="text-left p-4 mb-4" style="background-color: #f8f9fa; border-left: 5px solid #28a745; border-radius: 8px;">
+                    <p><strong>Patient:</strong> {{prescription.patientName}}</p>
+                    <p><strong>Doctor:</strong> {{prescription.doctorName}}</p>
+                    <!-- <p><strong>Medicine:</strong> {{prescription.medicine|linebreaks }}</p> -->
+                    <div class="prescription-box">
+                        <h6>Medications:</h6>
+                        <p style="white-space: pre-line;">{{ prescription.medicine|linebreaks }}</p>
+                    </div>
+                    <p><strong>Symptoms:</strong> {{prescription.symptoms}}</p>
+                    <p><strong>Notes:</strong> {{prescription.extra_notes}}</p>
+                    <p><strong><i class="fas fa-calendar-alt"></i> Date:</strong> 
+                        {{ prescription.prescribeDate|date:"F d, Y" }} 
+                        <span class="text-muted">at {{ prescription.prescribeDate|time:"H:i" }}</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <a href="{% url 'doctor-view-patient' %}" class="btn btn-outline-secondary btn-lg mr-3">Back to Patient List</a>
+                <button onclick="window.print()" class="btn btn-primary btn-lg">
+                    <i class="fas fa-print"></i> Print Official Copy
+                </button>
+                <a href="{% url 'download-prescription-pdf' prescription.id %}" class="btn btn-primary">
+                    <i class="fas fa-file-pdf"></i> Download Prescription PDF
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

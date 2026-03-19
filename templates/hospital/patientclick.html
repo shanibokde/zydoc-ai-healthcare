@@ -1,0 +1,172 @@
+{% extends 'hospital/homebase.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  .patient-hero {
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #f0fff8 0%, #e8f5f0 40%, #ddeef8 100%);
+    padding: 40px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .patient-hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(26,127,90,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .patient-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .patient-card {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 56px 52px;
+    box-shadow: 0 20px 60px rgba(15,45,34,0.1), 0 1px 3px rgba(0,0,0,0.05);
+    text-align: center;
+    max-width: 560px;
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.8);
+    position: relative;
+    z-index: 1;
+    animation: cardIn 0.6s ease both;
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .patient-icon-wrap {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #1a7f5a, #22a674);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    box-shadow: 0 8px 24px rgba(26,127,90,0.3);
+  }
+
+  .patient-icon-wrap i {
+    font-size: 32px;
+    color: white;
+  }
+
+  .patient-card h1 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    color: #0f2d22;
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+  }
+
+  .patient-card p.lead {
+    font-family: 'DM Sans', sans-serif;
+    color: #6b7c74;
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 36px;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn-group-patient {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-patient {
+    padding: 13px 36px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-patient-login {
+    background: linear-gradient(135deg, #1a7f5a, #22a674);
+    color: white !important;
+    box-shadow: 0 6px 20px rgba(26,127,90,0.3);
+    border: 2px solid transparent;
+  }
+
+  .btn-patient-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(26,127,90,0.4);
+    color: white !important;
+  }
+
+  .btn-patient-register {
+    background: transparent;
+    color: #1a7f5a !important;
+    border: 2px solid #1a7f5a;
+  }
+
+  .btn-patient-register:hover {
+    background: #1a7f5a;
+    color: white !important;
+    transform: translateY(-3px);
+  }
+
+  .card-footer-note {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid #e8f3ee;
+    font-size: 12px;
+    color: #9ab3a8;
+    font-family: 'DM Sans', sans-serif;
+  }
+</style>
+
+<div class="patient-hero">
+  <div class="patient-card">
+    <div class="patient-icon-wrap">
+      <i class="fas fa-user-injured"></i>
+    </div>
+    <h1>Hello, Patient</h1>
+    <p class="lead">Welcome to ZyDoc. Book appointments, view your medical history, and consult with specialists from the comfort of your home.</p>
+
+    <div class="btn-group-patient">
+      <a href="/patientsignup" class="btn-patient btn-patient-register">
+        <i class="fas fa-user-plus"></i> Register
+      </a>
+      <a href="/patientlogin" class="btn-patient btn-patient-login">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </a>
+    </div>
+
+    <div class="card-footer-note">
+      Your health, our priority.
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

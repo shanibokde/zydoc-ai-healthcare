@@ -1,0 +1,36 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-5">
+    <h2>🩺 AI Medical Assistant</h2>
+    <hr>
+
+    <div class="card p-4 shadow-sm">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">What is your primary symptom?</label>
+                <input type="text" name="symptom1" class="form-control" placeholder="e.g. Fever, Stomach Pain" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Any other details or follow-up symptoms?</label>
+                <input type="text" name="symptom2" class="form-control" placeholder="e.g. I have a cough, it started yesterday">
+            </div>
+            <button type="submit" class="btn btn-primary">Check Treatment</button>
+        </form>
+    </div>
+
+    {% if result %}
+    <div class="mt-5 card border-success p-4 shadow">
+        <h4 class="text-success">AI Diagnosis Result:</h4>
+        <p><strong>Detected Category:</strong> {{ result.category }}</p>
+        <p><strong>Recommended Medicine:</strong> {{ result.medicine }}</p>
+        <div class="alert alert-info">
+            <strong>Medical Advice:</strong> {{ result.advice }}
+        </div>
+        <small class="text-muted">AI Confidence Match: {{ result.match }}</small>
+        <div class="mt-3 alert alert-warning">
+            ⚠️ <strong>Disclaimer:</strong> This is a demo. Please consult a real doctor.
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

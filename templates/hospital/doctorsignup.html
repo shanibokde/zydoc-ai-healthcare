@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+{% load widget_tweaks %}
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Patient Management System</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, #0f1c2e 0%, #1a2e4a 60%, #0d2137 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { text-decoration: none; }
+
+    .auth-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .auth-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 44px 44px 36px;
+      width: 100%;
+      max-width: 580px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+    }
+
+    .auth-logo { text-align: center; margin-bottom: 28px; }
+
+    .auth-logo .logo-icon {
+      width: 58px; height: 58px;
+      background: linear-gradient(135deg, #3b7dd8, #00c6fb);
+      border-radius: 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; color: #fff;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 20px rgba(59,125,216,0.3);
+    }
+
+    .auth-logo h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1a2332;
+      margin-bottom: 4px;
+    }
+
+    .auth-logo p {
+      color: #6b7c93;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .form-section-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #6b7c93;
+      font-weight: 600;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #f0f4f8;
+    }
+
+    .form-group label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-control {
+      border-radius: 10px !important;
+      border: 1.5px solid #e2e8f0 !important;
+      padding: 11px 14px !important;
+      font-size: 0.9rem !important;
+      color: #1a2332 !important;
+      background: #fafbfc !important;
+      font-family: 'DM Sans', sans-serif !important;
+      transition: all 0.2s !important;
+    }
+
+    .form-control:focus {
+      border-color: #3b7dd8 !important;
+      box-shadow: 0 0 0 3px rgba(59,125,216,0.1) !important;
+      background: #fff !important;
+      outline: none !important;
+    }
+
+    .btn-auth {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, #3b7dd8, #00c6fb);
+      color: #fff;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+      box-shadow: 0 4px 14px rgba(59,125,216,0.3);
+      margin-top: 8px;
+    }
+
+    .btn-auth:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(59,125,216,0.4);
+    }
+
+    .auth-link {
+      text-align: center;
+      font-size: 0.84rem;
+      color: #6b7c93;
+      margin-top: 20px;
+    }
+
+    .auth-link a { color: #3b7dd8; font-weight: 600; }
+    .auth-link a:hover { text-decoration: underline; }
+  </style>
+</head>
+
+<body>
+  {% include "hospital/navbar.html" %}
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="logo-icon"><i class="fas fa-stethoscope"></i></div>
+        <h2>Register In Hospital</h2>
+        <p>Apply to join the ZyDoc Medical Network</p>
+      </div>
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-section-label">Doctor Information</div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>First Name</label>
+              {% render_field userForm.first_name class="form-control" placeholder="First Name" %}
+            </div>
+            <div class="form-group">
+              <label>Username</label>
+              {% render_field userForm.username class="form-control" placeholder="Username" %}
+            </div>
+            <div class="form-group">
+              <label>Department</label>
+              {% render_field doctorForm.department class="form-control" placeholder="Department" %}
+            </div>
+            <div class="form-group">
+              <label>Address</label>
+              {% render_field doctorForm.address class="form-control" placeholder="Address" %}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Last Name</label>
+              {% render_field userForm.last_name class="form-control" placeholder="Last Name" %}
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              {% render_field userForm.password class="form-control" placeholder="Password" %}
+            </div>
+            <div class="form-group">
+              <label>Mobile</label>
+              {% render_field doctorForm.mobile class="form-control" placeholder="Mobile" %}
+            </div>
+            <div class="form-group">
+              <label>Profile Picture</label>
+              {% render_field doctorForm.profile_pic required="required" class="form-control" %}
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn-auth">
+          <i class="fas fa-user-plus" style="margin-right:6px;"></i> Register
+        </button>
+      </form>
+
+      <div class="auth-link">
+        Already have an account? <a href="doctorlogin">Login here</a>
+      </div>
+    </div>
+  </div>
+
+  {% include "hospital/footer.html" %}
+</body>
+</html>

@@ -1,0 +1,162 @@
+{% extends 'hospital/patient_base.html' %}
+{% block content %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+  .appt-view-wrapper {
+    padding: 36px;
+  }
+
+  .page-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f2d22;
+    margin-bottom: 4px;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: #6b7c74;
+    margin-bottom: 26px;
+    text-align: left;
+  }
+
+  .table-card {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(15,45,34,0.07);
+    border: 1px solid #e0ede7;
+  }
+
+  .table-card-header {
+    background: linear-gradient(135deg, #1a7f5a, #22a674);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .table-card-header h6 {
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    margin: 0;
+    text-align: left;
+  }
+
+  .table-card-header i {
+    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+  }
+
+  .table-card .table {
+    margin: 0;
+  }
+
+  .table-card .table thead th {
+    background: #f3f8f5;
+    color: #4a6356;
+    font-family: 'Sora', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    border: none;
+    border-bottom: 1.5px solid #d6ece3;
+    padding: 14px 20px;
+  }
+
+  .table-card .table tbody td {
+    padding: 15px 20px;
+    font-size: 13.5px;
+    color: #2d4a3e;
+    border-bottom: 1px solid #eef6f2;
+    vertical-align: middle;
+  }
+
+  .table-card .table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .table-card .table tbody tr:hover td {
+    background: #f8fbf9;
+  }
+
+  .badge-confirmed {
+    display: inline-block;
+    background: rgba(26,127,90,0.1);
+    color: #1a7f5a;
+    border: 1px solid rgba(26,127,90,0.25);
+    font-family: 'Sora', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .badge-pending {
+    display: inline-block;
+    background: rgba(251,191,36,0.1);
+    color: #b45309;
+    border: 1px solid rgba(251,191,36,0.3);
+    font-family: 'Sora', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .appt-view-wrapper { padding: 20px 14px; }
+  }
+</style>
+
+<div class="appt-view-wrapper">
+  <h1 class="page-title">Your Appointments</h1>
+  <p class="page-subtitle">All your scheduled and pending appointments</p>
+
+  <div class="table-card">
+    <div class="table-card-header">
+      <i class="fa fa-calendar-check-o"></i>
+      <h6>Appointment History</h6>
+    </div>
+    <div class="table-responsive">
+      <table class="table" id="dev-table">
+        <thead>
+          <tr>
+            <th>Doctor Name</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in appointments %}
+          <tr>
+            <td><strong>{{a.doctorName}}</strong></td>
+            <td>{{a.description}}</td>
+            <td>{{a.appointmentDate}}</td>
+            <td>
+              {% if a.status %}
+                <span class="badge-confirmed">Confirmed</span>
+              {% else %}
+                <span class="badge-pending">Pending</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

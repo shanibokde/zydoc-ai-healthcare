@@ -1,0 +1,273 @@
+{% extends 'hospital/patient_base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+  .doctors-wrapper {
+    padding: 36px;
+  }
+
+  .page-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f2d22;
+    margin-bottom: 4px;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: #6b7c74;
+    margin-bottom: 24px;
+    text-align: left;
+  }
+
+  .search-bar-wrap {
+    margin-bottom: 22px;
+  }
+
+  .search-form {
+    display: flex;
+    gap: 10px;
+    max-width: 420px;
+  }
+
+  .search-form input {
+    flex: 1;
+    padding: 11px 16px;
+    border-radius: 10px;
+    border: 1.5px solid #d6ece3;
+    font-size: 13px;
+    color: #0f2d22;
+    background: #ffffff;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .search-form input:focus {
+    border-color: #1a7f5a;
+    box-shadow: 0 0 0 3px rgba(26,127,90,0.1);
+  }
+
+  .search-form button {
+    background: linear-gradient(135deg, #1a7f5a, #22a674);
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(26,127,90,0.25);
+  }
+
+  .search-form button:hover {
+    box-shadow: 0 6px 18px rgba(26,127,90,0.35);
+    transform: translateY(-1px);
+  }
+
+  .table-card {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(15,45,34,0.07);
+    border: 1px solid #e0ede7;
+  }
+
+  .table-card-header {
+    background: linear-gradient(135deg, #1a7f5a, #22a674);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .table-card-header h6 {
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    margin: 0;
+    text-align: left;
+  }
+
+  .table-card .table {
+    margin: 0;
+  }
+
+  .table-card .table thead th {
+    background: #f3f8f5;
+    color: #4a6356;
+    font-family: 'Sora', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    border: none;
+    border-bottom: 1.5px solid #d6ece3;
+    padding: 14px 20px;
+  }
+
+  .table-card .table tbody td {
+    padding: 14px 20px;
+    font-size: 13.5px;
+    color: #2d4a3e;
+    border-bottom: 1px solid #eef6f2;
+    vertical-align: middle;
+  }
+
+  .table-card .table tbody tr:last-child td { border-bottom: none; }
+  .table-card .table tbody tr:hover td { background: #f8fbf9; }
+
+  .doctor-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #d6ece3;
+    display: block;
+  }
+
+  /* ── AVATAR FALLBACK ── */
+  .avatar-wrap {
+    width: 38px; height: 38px;
+    flex-shrink: 0;
+  }
+
+  .avatar-fallback {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+
+  .avatar-img-error .doctor-avatar    { display: none; }
+  .avatar-img-error .avatar-fallback  { display: flex; }
+
+  .av-0 { background: linear-gradient(135deg, #00c896, #00a87a); }
+  .av-1 { background: linear-gradient(135deg, #3b7dd8, #2563c7); }
+  .av-2 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .av-3 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+  .av-4 { background: linear-gradient(135deg, #ef4444, #dc2626); }
+  .av-5 { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+
+  .dept-badge {
+    display: inline-block;
+    background: rgba(26,127,90,0.08);
+    color: #1a7f5a;
+    border: 1px solid rgba(26,127,90,0.2);
+    font-family: 'Sora', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .no-result {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 18px;
+    border: 1px solid #e0ede7;
+  }
+
+  .no-result i {
+    font-size: 40px;
+    color: #d6ece3;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .no-result h4 {
+    font-family: 'Sora', sans-serif;
+    color: #0f2d22;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .no-result p {
+    color: #6b7c74;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .doctors-wrapper { padding: 20px 14px; }
+  }
+</style>
+
+<div class="doctors-wrapper">
+  <h1 class="page-title">Our Doctors</h1>
+  <p class="page-subtitle">Browse and search available medical specialists</p>
+
+  <div class="search-bar-wrap">
+    <form action="/searchdoctor" method="get" class="search-form">
+      <input type="search" placeholder="Search by name or department..." name="query" id="query">
+      <button type="submit"><i class="fa fa-search"></i> Search</button>
+    </form>
+  </div>
+
+  {% if doctors %}
+  <div class="table-card">
+    <div class="table-card-header">
+      <i class="fa fa-user-md" style="color:rgba(255,255,255,0.7);"></i>
+      <h6>Total Doctor List</h6>
+    </div>
+    <div class="table-responsive">
+      <table class="table" id="dev-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Photo</th>
+            <th>Mobile</th>
+            <th>Address</th>
+            <th>Department</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in doctors %}
+          <tr>
+            <td><strong>{{ d.get_name }}</strong></td>
+            <td>
+              <div class="avatar-wrap" id="av-wrap-{{forloop.counter}}">
+                <img class="doctor-avatar"
+                  src="{% if d.profile_pic %}{{ d.profile_pic.url }}{% else %}{% static 'images/default_user.png' %}{% endif %}"
+                  alt="{{ d.get_name }}"
+                  onerror="document.getElementById('av-wrap-{{forloop.counter}}').classList.add('avatar-img-error')">
+                <div class="avatar-fallback">{{ d.get_name|slice:":1"|upper }}</div>
+              </div>
+            </td>
+            <td>{{ d.mobile }}</td>
+            <td>{{ d.address }}</td>
+            <td><span class="dept-badge">{{ d.department }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <div class="no-result">
+    <i class="fa fa-user-md"></i>
+    <h4>No Doctors Found</h4>
+    <p>Try searching for a different name or department.</p>
+  </div>
+  {% endif %}
+</div>
+<script>
+  document.querySelectorAll('.avatar-fallback').forEach(function(el, i) {
+    el.classList.add('av-' + (i % 6));
+  });
+</script>
+
+{% endblock content %}

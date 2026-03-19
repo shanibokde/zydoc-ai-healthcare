@@ -1,0 +1,165 @@
+{% extends 'hospital/patient_base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+  .appt-wrapper {
+    padding: 36px;
+  }
+
+  .page-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f2d22;
+    margin-bottom: 6px;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: #6b7c74;
+    margin-bottom: 30px;
+    text-align: left;
+  }
+
+  .appt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    max-width: 860px;
+  }
+
+  .appt-action-card {
+    border-radius: 18px;
+    padding: 34px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+
+  .appt-action-card::after {
+    content: '';
+    position: absolute;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    right: -30px; bottom: -50px;
+    background: rgba(255,255,255,0.1);
+    pointer-events: none;
+  }
+
+  .appt-action-card:hover {
+    transform: translateY(-6px);
+    text-decoration: none;
+  }
+
+  .appt-action-card.card-view {
+    background: linear-gradient(135deg, #1a7f5a 0%, #22a674 100%);
+    box-shadow: 0 8px 28px rgba(26,127,90,0.28);
+  }
+
+  .appt-action-card.card-view:hover {
+    box-shadow: 0 14px 40px rgba(26,127,90,0.4);
+  }
+
+  .appt-action-card.card-book {
+    background: linear-gradient(135deg, #1a56a0 0%, #2979d8 100%);
+    box-shadow: 0 8px 28px rgba(26,86,160,0.28);
+  }
+
+  .appt-action-card.card-book:hover {
+    box-shadow: 0 14px 40px rgba(26,86,160,0.4);
+  }
+
+  .appt-card-left { z-index: 1; }
+
+  .appt-card-label {
+    font-family: 'Sora', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 8px;
+  }
+
+  .appt-card-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  .appt-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.18);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.25);
+    transition: background 0.2s;
+  }
+
+  .appt-action-card:hover .appt-card-cta {
+    background: rgba(255,255,255,0.28);
+  }
+
+  .appt-card-icon {
+    font-size: 3.2rem;
+    color: rgba(255,255,255,0.18);
+    z-index: 1;
+  }
+
+  @media (max-width: 600px) {
+    .appt-grid { grid-template-columns: 1fr; }
+    .appt-wrapper { padding: 24px 16px; }
+  }
+</style>
+
+<div class="appt-wrapper">
+  <h1 class="page-title">Appointments</h1>
+  <p class="page-subtitle">Manage and schedule your doctor appointments</p>
+
+  <div class="appt-grid">
+    <a href="/patient-view-appointment" class="appt-action-card card-view">
+      <div class="appt-card-left">
+        <div class="appt-card-label">Your Schedule</div>
+        <div class="appt-card-title">View Your Appointments</div>
+        <div class="appt-card-cta">
+          Open <i class="fa fa-arrow-right"></i>
+        </div>
+      </div>
+      <div class="appt-card-icon">
+        <i class="fa fa-calendar-check-o"></i>
+      </div>
+    </a>
+
+    <a href="/patient-book-appointment" class="appt-action-card card-book">
+      <div class="appt-card-left">
+        <div class="appt-card-label">New Booking</div>
+        <div class="appt-card-title">Book New Appointment</div>
+        <div class="appt-card-cta">
+          Book Now <i class="fa fa-plus"></i>
+        </div>
+      </div>
+      <div class="appt-card-icon">
+        <i class="fa fa-plus-circle"></i>
+      </div>
+    </a>
+  </div>
+</div>
+{% endblock content %}

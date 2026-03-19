@@ -1,0 +1,136 @@
+<style>
+    .form-container { max-width: 400px; margin: 50px auto; font-family: sans-serif; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; font-weight: bold; margin-bottom: 5px; }
+    input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    .btn-success { background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; width: 100%; }
+</style>
+
+<div class="form-container">
+    <h2>Book Appointment</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert-danger">
+                <strong>Hold on:</strong> {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form action="/confirm-appointment/" method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Symptom:</label>
+            <input type="text" name="symptom" value="{{ request.GET.symptom }}" readonly>
+        </div>
+
+        <input type="hidden" name="doctor_name" value="{{ request.GET.doctor_name }}">
+
+        <div class="form-group">
+            <label>Patient Name:</label>
+            <input type="text" name="name" placeholder="Enter your name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Mobile Number:</label>
+            <input type="text" name="mobile" placeholder="Enter mobile number" required>
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address (Area):</label>
+            <input type="text" name="address" class="form-control" placeholder="e.g. Nikol, Thaltej" required>
+        </div>
+
+        <div class="form-group">
+            <label>Select Date:</label>
+            <input type="date" name="appointment_date" id="datePicker" required min="{{ today|date:'Y-m-d' }}">
+        </div>
+
+        <div class="form-group">
+            <label>Preferred Time Slot:</label>
+            <select name="time_slot" id="time_slot" class="form-control" style="width: 100%; padding: 8px;" required>
+                <option value="" disabled selected>Choose a slot</option>
+
+                <optgroup label="Morning">
+                    {% if "10:00 AM" not in booked_slots %}
+                        <option value="10:00 AM" class="time-opt" data-hour="10">10:00 AM</option>
+                    {% endif %}
+                    {% if "11:00 AM" not in booked_slots %}
+                        <option value="11:00 AM" class="time-opt" data-hour="11">11:00 AM</option>
+                    {% endif %}
+                    {% if "12:00 PM" not in booked_slots %}
+                        <option value="12:00 PM" class="time-opt" data-hour="12">12:00 PM</option>
+                    {% endif %}
+                </optgroup>
+
+                <optgroup label="Afternoon">
+                    {% if "02:00 PM" not in booked_slots %}
+                        <option value="02:00 PM" class="time-opt" data-hour="14">02:00 PM</option>
+                    {% endif %}
+                    {% if "03:00 PM" not in booked_slots %}
+                        <option value="03:00 PM" class="time-opt" data-hour="15">03:00 PM</option>
+                    {% endif %}
+                    {% if "04:00 PM" not in booked_slots %}
+                        <option value="04:00 PM" class="time-opt" data-hour="16">04:00 PM</option>
+                    {% endif %}
+                </optgroup>
+
+                <optgroup label="Evening">
+                    {% if "06:00 PM" not in booked_slots %}
+                        <option value="06:00 PM" class="time-opt" data-hour="18">06:00 PM</option>
+                    {% endif %}
+                    {% if "07:00 PM" not in booked_slots %}
+                        <option value="07:00 PM" class="time-opt" data-hour="19">07:00 PM</option>
+                    {% endif %}
+                    {% if "08:00 PM" not in booked_slots %}
+                        <option value="08:00 PM" class="time-opt" data-hour="20">08:00 PM</option>
+                    {% endif %}
+                </optgroup>
+            </select>
+        </div>
+
+        <button type="submit" class="btn-success" style="background-color: #ed0000;">Confirm Appointment</button>
+
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const datePicker = document.getElementById('datePicker');
+    const timeSlotSelect = document.getElementById('time_slot');
+    const options = document.querySelectorAll('.time-opt');
+
+    datePicker.addEventListener('change', function() {
+        const selectedDate = this.value;
+        const doctorName = "{{ doctor_name }}"; // From context
+
+        // Instead of refreshing, we "Fetch" the booked slots in the background
+        fetch(`/check-slots/?doctor_name=${doctorName}&appointment_date=${selectedDate}`)
+            .then(response => response.json())
+            .then(data => {
+                const bookedDescriptions = data.booked_slots;
+                const pastSlots = data.past_slots; // Get the list of past times
+
+        options.forEach(opt => {
+            const slotValue = opt.value; // e.g., "10:00 AM"
+            
+            // Check if it's booked
+            const isBooked = bookedDescriptions.some(desc => desc.includes(slotValue));
+            
+            // Check if it's already past (Today only)
+            const isPast = pastSlots.includes(slotValue);
+
+            if (isBooked || isPast) {
+                opt.style.display = 'none';
+                opt.disabled = true;
+            } else {
+                opt.style.display = 'block';
+                opt.disabled = false;
+            }
+        });
+    });
+            
+        timeSlotSelect.value = ""; // Clear selection to be safe
+    });
+});
+</script>

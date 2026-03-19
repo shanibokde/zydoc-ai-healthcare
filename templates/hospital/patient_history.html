@@ -1,0 +1,367 @@
+{% extends "hospital/doctor_base.html" %}
+{% block content %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+  @media print {
+    .btn, .form-inline, .smartphone-menu-trigger, header.avatar, .sidebar, .navbar { display: none !important; }
+    .container, .report-card { width: 100% !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; }
+    body { background-color: white !important; }
+  }
+
+  .history-wrapper {
+    padding: 32px 36px;
+  }
+
+  .page-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f2d22;
+    margin-bottom: 4px;
+  }
+
+  .patient-meta {
+    font-size: 13px;
+    color: #6b7c74;
+    margin-bottom: 24px;
+    text-align: left;
+  }
+
+  /* Filter Bar */
+  .filter-bar {
+    background: white;
+    border-radius: 14px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    border: 1px solid #e0ede7;
+    box-shadow: 0 2px 10px rgba(15,45,34,0.05);
+    margin-bottom: 22px;
+  }
+
+  .filter-bar label {
+    font-family: 'Sora', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #4a6356;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .filter-bar input[type=date] {
+    border: 1.5px solid #d6ece3;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #0f2d22;
+    outline: none;
+    background: #f8fbf9;
+    transition: border-color 0.2s;
+  }
+
+  .filter-bar input[type=date]:focus {
+    border-color: #1a7f5a;
+    box-shadow: 0 0 0 3px rgba(26,127,90,0.1);
+    background: white;
+  }
+
+  .filter-bar .btn-filter {
+    background: linear-gradient(135deg, #1a7f5a, #22a674);
+    color: white;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(26,127,90,0.25);
+    transition: all 0.2s;
+  }
+
+  .filter-bar .btn-filter:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(26,127,90,0.35); }
+
+  .filter-bar .btn-reset {
+    background: transparent;
+    color: #6b7c74;
+    border: 1.5px solid #d6ece3;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .filter-bar .btn-reset:hover { border-color: #6b7c74; color: #0f2d22; text-decoration: none; }
+
+  /* Table Card */
+  .table-card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(15,45,34,0.07);
+    border: 1px solid #e0ede7;
+    margin-bottom: 32px;
+  }
+
+  .table-card-header {
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .table-card-header.green-header { background: linear-gradient(135deg, #1a7f5a, #22a674); }
+  .table-card-header.teal-header { background: linear-gradient(135deg, #0e7490, #06b6d4); }
+
+  .table-card-header h6 {
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    margin: 0;
+  }
+
+  .btn-upload {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.18);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-upload:hover { background: rgba(255,255,255,0.28); color: white; text-decoration: none; }
+
+  .btn-print {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #0f2d22;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-print:hover { background: #1a7f5a; color: white; }
+
+  .actions-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+  }
+
+  .table-card .table { margin: 0; }
+
+  .table-card .table thead th {
+    background: #f3f8f5;
+    color: #4a6356;
+    font-family: 'Sora', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    border: none;
+    border-bottom: 1.5px solid #d6ece3;
+    padding: 13px 18px;
+  }
+
+  .teal-table thead th { background: #f0fafd; color: #0e7490; border-bottom-color: #bae6fd; }
+
+  .table-card .table tbody td {
+    padding: 13px 18px;
+    font-size: 13px;
+    color: #2d4a3e;
+    border-bottom: 1px solid #eef6f2;
+    vertical-align: middle;
+  }
+
+  .table-card .table tbody tr:last-child td { border-bottom: none; }
+  .table-card .table tbody tr:hover td { background: #f8fbf9; }
+
+  .medicine-text { color: #c0392b; font-weight: 600; font-size: 13px; }
+
+  .report-type-badge {
+    display: inline-block;
+    background: rgba(6,182,212,0.1);
+    color: #0e7490;
+    border: 1px solid rgba(6,182,212,0.25);
+    font-family: 'Sora', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .btn-view-report {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+    color: #0e7490;
+    border: 1.5px solid #bae6fd;
+    padding: 5px 12px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-view-report:hover { background: #0e7490; color: white; border-color: #0e7490; text-decoration: none; }
+
+  .section-divider {
+    margin: 10px 0 24px;
+    border: none;
+    border-top: 1.5px solid #e0ede7;
+  }
+
+  .btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #f3f8f5;
+    color: #4a6356;
+    border: 1.5px solid #d6ece3;
+    padding: 10px 20px;
+    border-radius: 9px;
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-top: 12px;
+  }
+
+  .btn-back:hover { background: #1a7f5a; color: white; border-color: #1a7f5a; text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .history-wrapper { padding: 20px 14px; }
+    .filter-bar { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+<div class="history-wrapper">
+  <h1 class="page-title">Patient Medical Ledger</h1>
+  <p class="patient-meta">{{ patient.get_name }} &nbsp;·&nbsp; ID: #PT-00{{ patient.id }} &nbsp;·&nbsp; {{ patient.mobile }}</p>
+
+  <div class="filter-bar">
+    <label>Filter by Date:</label>
+    <form method="GET" class="d-flex align-items-center" style="gap:10px; flex-wrap:wrap;">
+      <input type="date" name="start_date" value="{{start_date}}">
+      <span style="font-size:13px; color:#6b7c74;">to</span>
+      <input type="date" name="end_date" value="{{end_date}}">
+      <button type="submit" class="btn-filter"><i class="fa fa-search"></i> Filter</button>
+      <a href="{% url 'view-patient-history' patient.id %}" class="btn-reset">Reset</a>
+    </form>
+  </div>
+
+  <div class="actions-row no-print">
+    <button onclick="window.print()" class="btn-print">
+      <i class="fa fa-print"></i> Print Report
+    </button>
+  </div>
+
+  <div class="table-card">
+    <div class="table-card-header green-header">
+      <h6><i class="fa fa-file-medical" style="margin-right:8px;"></i> Consultation History</h6>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Consultation Date</th>
+            <th>Symptoms</th>
+            <th>Prescribed Medicine</th>
+            <th>Doctor's Notes</th>
+            <th>Attending Physician</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for h in history %}
+          <tr>
+            <td><strong>{{h.consultationDate}}</strong></td>
+            <td>{{h.symptoms}}</td>
+            <td><span class="medicine-text">{{h.medicine|linebreaks}}</span></td>
+            <td>{{h.extra_notes}}</td>
+            <td>{{h.doctorName}}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" style="text-align:center; color:#6b7c74; padding:30px;">No previous medical records found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="table-card">
+    <div class="table-card-header teal-header">
+      <h6><i class="fa fa-flask" style="margin-right:8px;"></i> Diagnostic Lab Reports</h6>
+      <a href="{% url 'upload-lab-report' patient.id %}" class="btn-upload no-print">
+        <i class="fa fa-upload"></i> Upload New
+      </a>
+    </div>
+    <div class="table-responsive">
+      <table class="table teal-table">
+        <thead>
+          <tr>
+            <th>Upload Date</th>
+            <th>Report Type</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for report in lab_reports %}
+          <tr>
+            <td><strong>{{ report.upload_date|date:"d M Y" }}</strong></td>
+            <td><span class="report-type-badge">{{ report.report_type }}</span></td>
+            <td>{{ report.description }}</td>
+            <td>
+              <a href="{{ report.report_file.url }}" class="btn-view-report" target="_blank">
+                <i class="fa fa-eye"></i> View
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" style="text-align:center; color:#6b7c74; padding:30px;">No diagnostic reports uploaded yet.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <a href="{% url 'doctor-view-patient' %}" class="btn-back">
+    <i class="fa fa-arrow-left"></i> Back to Patient List
+  </a>
+</div>
+{% endblock content %}

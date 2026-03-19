@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>About Us | ZyDoc AI Healthcare</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    :root {
+      --navy: #0f1c2e;
+      --accent: #00c896;
+      --blue: #3b7dd8;
+      --text: #1a2332;
+      --muted: #6b7c93;
+      --bg: #f0f4f8;
+      --card: #ffffff;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    a { text-decoration: none; }
+
+    /* ── HERO ── */
+    .about-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a2e4a 60%, #0d2137 100%);
+      padding: 90px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 450px; height: 450px;
+      background: radial-gradient(circle, rgba(0,200,150,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .about-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(59,125,216,0.07) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .about-hero .hero-inner {
+      position: relative; z-index: 1;
+    }
+
+    .about-hero .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(0,200,150,0.12);
+      border: 1px solid rgba(0,200,150,0.25);
+      border-radius: 20px;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .about-hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .about-hero .lead {
+      color: rgba(255,255,255,0.5);
+      font-size: 1rem;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── CARDS SECTION ── */
+    .cards-section {
+      padding: 64px 0 80px;
+    }
+
+    .section-label {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .section-label h2 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .section-label p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .section-label .line {
+      width: 40px; height: 3px;
+      background: var(--accent);
+      border-radius: 4px;
+      margin: 12px auto 0;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 30px 36px;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      height: 100%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card.admin-card::before  { background: linear-gradient(90deg, var(--blue), #00c6fb); }
+    .feature-card.doctor-card::before { background: linear-gradient(90deg, var(--accent), #2ed8b6); }
+    .feature-card.patient-card::before { background: linear-gradient(90deg, #f7971e, #ffd200); }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+    }
+
+    .feature-card:hover::before { opacity: 1; }
+
+    .icon-box {
+      width: 72px; height: 72px;
+      border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      margin: 0 auto 24px;
+    }
+
+    .admin-card  .icon-box { background: #eff4ff; color: var(--blue); }
+    .doctor-card .icon-box { background: #ecfdf5; color: #059669; }
+    .patient-card .icon-box { background: #fff8e6; color: #d97706; }
+
+    .feature-card h4 {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center;
+      padding: 0 0 80px;
+    }
+
+    .cta-card {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a2e4a 100%);
+      border-radius: 24px;
+      padding: 56px 40px;
+      display: inline-block;
+      width: 100%;
+      max-width: 620px;
+    }
+
+    .cta-card h3 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .cta-card p {
+      color: rgba(255,255,255,0.45);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: var(--accent);
+      color: #fff !important;
+      border: none;
+      padding: 13px 36px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      box-shadow: 0 4px 18px rgba(0,200,150,0.35);
+    }
+
+    .btn-home:hover {
+      background: #00b385;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,200,150,0.4);
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  {% include "hospital/navbar.html" %}
+
+  <!-- Hero -->
+  <section class="about-hero">
+    <div class="container hero-inner">
+      <div class="hero-badge"><i class="fas fa-heartbeat"></i> ZyDoc AI Healthcare</div>
+      <h1>Our Mission</h1>
+      <p class="lead">Providing a seamless, AI-driven healthcare management experience for everyone.</p>
+    </div>
+  </section>
+
+  <!-- Feature Cards -->
+  <section class="cards-section">
+    <div class="container">
+      <div class="section-label">
+        <h2>Built For Everyone</h2>
+        <p>One platform serving the entire healthcare ecosystem.</p>
+        <div class="line"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <a href="/adminclick" style="text-decoration: none; color: inherit;">
+          <div class="feature-card admin-card">
+            <div class="icon-box"><i class="fas fa-user-shield"></i></div>
+            <h4>For Admins</h4>
+            <p>Complete control over hospital resources, staff approvals, and patient records with high-level security.</p>
+          </div>
+          </a>
+        </div>
+        
+
+        <div class="col-md-4 mb-4">
+          <a href="/doctorclick" style="text-decoration: none; color: inherit;">
+          <div class="feature-card doctor-card">
+            <div class="icon-box"><i class="fas fa-user-md"></i></div>
+            <h4>For Doctors</h4>
+            <p>Efficiently manage appointments, track patient histories, and utilize AI triage tools for better diagnosis.</p>
+          </div>
+          </a>
+        </div>
+
+        
+        <div class="col-md-4 mb-4">
+          <a href="/patientclick" style="text-decoration: none; color: inherit;">
+          <div class="feature-card patient-card">
+            <div class="icon-box" ><i class="fas fa-procedures"></i></div>
+            <h4>For Patients</h4>
+            <p>Easy registration, online appointment booking, and instant access to medical records anytime, anywhere.</p>
+          </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container text-center">
+      <div class="cta-card">
+        <h3>Ready to explore ZyDoc AI?</h3>
+        <p>Experience smarter hospital management today.</p>
+        <a class="btn-home" href="/" role="button">
+          <i class="fas fa-home"></i> RETURN HOME
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {% include "hospital/footer.html" %}
+</body>
+
+</html>

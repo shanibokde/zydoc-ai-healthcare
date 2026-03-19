@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ZyDoc | AI Healthcare</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #1a7f5a;
+      --primary-light: #22a674;
+      --primary-dark: #155f44;
+      --accent: #00e5a0;
+      --accent2: #3b82f6;
+      --sidebar-bg: #0f2d22;
+      --sidebar-width: 260px;
+      --topbar-height: 66px;
+      --text-main: #0f1a14;
+      --text-muted: #6b7c74;
+      --surface: #ffffff;
+      --surface2: #f3f8f5;
+      --border: #d6ece3;
+      --shadow: 0 4px 24px rgba(15,45,34,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--surface2);
+      color: var(--text-main);
+      padding-top: var(--topbar-height);
+      padding-left: var(--sidebar-width);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    a:hover { color: inherit; text-decoration: none; }
+
+    /* ── SIDEBAR ── */
+    .menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: var(--sidebar-bg);
+      z-index: 1040;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-right: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .menu::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(0,229,160,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .menu .avatar {
+      padding: 32px 24px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .menu .avatar .avatar-ring {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, var(--accent), var(--primary-light));
+    }
+
+    .menu .avatar .avatar-ring img {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--sidebar-bg);
+      display: block;
+    }
+
+    .menu .avatar .avatar-ring .sidebar-initials {
+      display: none;
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1a7f5a, #22a674);
+      border: 3px solid var(--sidebar-bg);
+      align-items: center;
+      justify-content: center;
+      font-family: 'Sora', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .menu .avatar .avatar-ring.img-error img              { display: none; }
+    .menu .avatar .avatar-ring.img-error .sidebar-initials { display: flex; }
+
+    .menu .avatar .role-badge {
+      font-family: 'Sora', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(0,229,160,0.1);
+      border: 1px solid rgba(0,229,160,0.25);
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .menu .avatar h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .menu ul {
+      list-style: none;
+      padding: 16px 0;
+      flex: 1;
+    }
+
+    .menu ul li a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 24px;
+      color: rgba(255,255,255,0.6);
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
+      position: relative;
+    }
+
+    .menu ul li a:hover,
+    .menu ul li a.active {
+      color: #ffffff;
+      background: rgba(0,229,160,0.08);
+      border-left-color: var(--accent);
+    }
+
+    .menu ul li a:hover i,
+    .menu ul li a.active i {
+      color: var(--accent);
+    }
+
+    .menu ul li a i {
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+      color: rgba(255,255,255,0.4);
+      transition: color 0.2s;
+    }
+
+    .menu ul li a span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* ── TOPBAR ── */
+    .navbar.fixed-top {
+      left: var(--sidebar-width) !important;
+      width: calc(100% - var(--sidebar-width)) !important;
+      height: var(--topbar-height);
+      background: var(--surface) !important;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 12px rgba(15,45,34,0.06);
+      z-index: 1030;
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+    }
+
+    #dhanshu-logo-img {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .nav-logout {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted) !important;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+      background: var(--surface2);
+    }
+
+    .nav-logout:hover {
+      color: #e74c3c !important;
+      border-color: #fdd;
+      background: #fff5f5;
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── FOOTER — same as admin/doctor footer ── */
+    footer {
+      background: var(--sidebar-bg);
+      padding: 20px 28px;
+      width: 100%;
+      flex-shrink: 0;
+      margin-top: auto;
+    }
+
+    footer .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer .footer-copy {
+      margin: 0;
+      color: rgba(255,255,255,0.3);
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      text-align: left;
+    }
+
+    footer .social-links {
+      display: flex;
+      gap: 8px;
+    }
+
+    footer .social-links a {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.4);
+      font-size: 13px;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    footer .social-links a:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      :root { --sidebar-width: 72px; }
+      body { padding-left: 72px; }
+      .menu .avatar { padding: 16px 8px; }
+      .menu .avatar .avatar-ring { width: 48px; height: 48px; }
+      .menu .avatar h2,
+      .menu .avatar .role-badge { display: none; }
+      .menu ul li a span { display: none; }
+      .menu ul li a { padding: 14px 0; justify-content: center; border-left: none; border-bottom: 3px solid transparent; }
+      .menu ul li a:hover, .menu ul li a.active { border-left: none; border-bottom-color: var(--accent); }
+    }
+
+    @media (max-width: 480px) {
+      body { padding-left: 0; }
+      .menu { transform: translateX(-100%); transition: transform 0.3s ease; }
+      .menu.open { transform: translateX(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="menu" tabindex="0">
+    <div class="smartphone-menu-trigger"></div>
+    <header class="avatar">
+      <div class="avatar-ring" id="sidebarAvatarRing">
+        {% if patient.profile_pic %}
+          <img src="{{ patient.profile_pic.url }}" alt="Profile"
+               onerror="document.getElementById('sidebarAvatarRing').classList.add('img-error')">
+        {% else %}
+          <img src="/static/images/default_user.png" alt="Profile"
+               onerror="document.getElementById('sidebarAvatarRing').classList.add('img-error')">
+        {% endif %}
+        <div class="sidebar-initials">{{ request.user.first_name|slice:":1"|upper }}</div>
+      </div>
+      <div class="role-badge">Patient</div>
+      <h2>{{request.user.first_name}}</h2>
+    </header>
+    <ul>
+      <li>
+        <a href="/patient-dashboard">
+          <i class="fas fa-th-large"></i><span>Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="/patient-appointment">
+          <i class="fas fa-calendar-check"></i><span>Appointments</span>
+        </a>
+      </li>
+      <li>
+        <a href="/patient-view-doctor">
+          <i class="fas fa-user-md"></i><span>Doctors</span>
+        </a>
+      </li>
+      <li>
+        <a href="/patient-discharge">
+          <i class="fas fa-sign-out-alt"></i><span>Discharge</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="bs-example">
+      <nav class="navbar navbar-expand-md fixed-top">
+        <a href="/patient-dashboard" class="navbar-brand d-flex align-items-center">
+          <img src="{% static 'images/zydoc2.svg' %}" alt="ZyDoc" id="dhanshu-logo-img">
+        </a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+          <div class="navbar-nav">
+            <a href="/logout" class="nav-item nav-link nav-logout">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    {% block content %}
+    {% endblock content %}
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">Made with ❤️ in India &nbsp;·&nbsp; Copyright &copy; 2020 PMS</span>
+      <div class="social-links">
+        <a href="/contactus#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="/contactus#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="/contactus#" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="/contactus#" title="Twitter"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

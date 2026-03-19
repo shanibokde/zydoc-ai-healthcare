@@ -1,0 +1,182 @@
+{% extends 'hospital/admin_base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .page-header { margin-bottom: 24px; }
+  .page-header h2 { font-size: 1.5rem; font-weight: 700; color: #1a2332; margin-bottom: 4px; }
+  .page-header p { color: #6b7c93; font-size: 0.88rem; text-align: left; }
+
+  .data-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+
+  .data-card-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .data-card-header h6 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a2332;
+    margin: 0;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .data-card-header h6::before {
+    content: '';
+    display: inline-block;
+    width: 4px; height: 18px;
+    background: #00c896;
+    border-radius: 4px;
+  }
+
+  .modern-table { width: 100%; border-collapse: collapse; }
+  .modern-table thead tr { background: #f8fafc; }
+  .modern-table thead th {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: #6b7c93;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+  }
+  .modern-table tbody tr { border-bottom: 1px solid #f0f4f8; transition: background 0.15s; }
+  .modern-table tbody tr:last-child { border-bottom: none; }
+  .modern-table tbody tr:hover { background: #fafcff; }
+  .modern-table tbody td { padding: 13px 20px; font-size: 0.875rem; color: #2d3748; vertical-align: middle; }
+  .modern-table tbody td strong { font-weight: 600; color: #1a2332; }
+
+  /* ── AVATAR ── */
+  .avatar-wrap {
+    position: relative;
+    width: 38px; height: 38px;
+    flex-shrink: 0;
+  }
+
+  .profile-img {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e2e8f0;
+    display: block;
+  }
+
+  /* Shown only when image fails to load */
+  .avatar-fallback {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: none;                        /* hidden by default */
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+
+  /* JS swaps these when img errors */
+  .avatar-img-error .profile-img     { display: none; }
+  .avatar-img-error .avatar-fallback { display: flex; }
+
+  /* Colour palette cycling by index mod 6 */
+  .av-0 { background: linear-gradient(135deg, #00c896, #00a87a); }
+  .av-1 { background: linear-gradient(135deg, #3b7dd8, #2563c7); }
+  .av-2 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .av-3 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+  .av-4 { background: linear-gradient(135deg, #ef4444, #dc2626); }
+  .av-5 { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+
+  .btn-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-icon.edit   { background: #eff4ff; color: #3b7dd8; }
+  .btn-icon.delete { background: #fff1f0; color: #e53e3e; }
+  .btn-icon.edit:hover   { background: #3b7dd8; color: #fff; }
+  .btn-icon.delete:hover { background: #e53e3e; color: #fff; }
+</style>
+
+<div class="page-header">
+  <h2>Patient List</h2>
+  <p>All patients registered in the hospital system.</p>
+</div>
+
+<div class="data-card">
+  <div class="data-card-header">
+    <h6>Patients Registered in Hospital</h6>
+  </div>
+  <div class="table-responsive">
+    <table class="modern-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Photo</th>
+          <th>Symptoms</th>
+          <th>Mobile</th>
+          <th>Address</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in patients %}
+        <tr>
+          <td><strong>{{p.get_name}}</strong></td>
+          <td>
+            <div class="avatar-wrap" id="av-wrap-{{forloop.counter}}">
+              {% if p.profile_pic %}
+              <img src="{{p.profile_pic.url}}"
+                   alt="{{p.get_name}}"
+                   class="profile-img"
+                   onerror="document.getElementById('av-wrap-{{forloop.counter}}').classList.add('avatar-img-error')">
+              {% else %}
+              <img src="{% static 'images/default_user.png' %}"
+                   alt="{{p.get_name}}"
+                   class="profile-img"
+                   onerror="document.getElementById('av-wrap-{{forloop.counter}}').classList.add('avatar-img-error')">
+              {% endif %}
+              <div class="avatar-fallback av-{{forloop.counter0|divisibleby:6|yesno:'0,0'}} av-{{ forloop.counter0|add:'0' }}">
+                {{ p.get_name|slice:":1"|upper }}
+              </div>
+            </div>
+          </td>
+          <td>{{p.symptoms}}</td>
+          <td>{{p.mobile}}</td>
+          <td>{{p.address}}</td>
+          <td><a class="btn-icon edit" href="{% url 'update-patient' p.id %}"><i class="fas fa-edit"></i></a></td>
+          <td><a class="btn-icon delete" href="{% url 'delete-patient-from-hospital' p.id %}"><i class="fas fa-trash"></i></a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // Assign cycling colour class to each fallback avatar
+  document.querySelectorAll('.avatar-fallback').forEach(function(el, i) {
+    el.classList.remove('av-0','av-1','av-2','av-3','av-4','av-5');
+    el.classList.add('av-' + (i % 6));
+  });
+</script>
+
+{% endblock content %}

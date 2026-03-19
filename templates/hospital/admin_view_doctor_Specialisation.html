@@ -1,0 +1,101 @@
+{% extends 'hospital/admin_base.html' %}
+{% block content %}
+
+<style>
+  .page-header { margin-bottom: 24px; }
+  .page-header h2 { font-size: 1.5rem; font-weight: 700; color: #1a2332; margin-bottom: 4px; }
+  .page-header p { color: #6b7c93; font-size: 0.88rem; text-align: left; }
+
+  .data-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+
+  .data-card-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .data-card-header h6 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a2332;
+    margin: 0;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .data-card-header h6::before {
+    content: '';
+    display: inline-block;
+    width: 4px; height: 18px;
+    background: #00c896;
+    border-radius: 4px;
+  }
+
+  .modern-table { width: 100%; border-collapse: collapse; }
+  .modern-table thead tr { background: #f8fafc; }
+  .modern-table thead th {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: #6b7c93;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+  }
+  .modern-table tbody tr { border-bottom: 1px solid #f0f4f8; transition: background 0.15s; }
+  .modern-table tbody tr:last-child { border-bottom: none; }
+  .modern-table tbody tr:hover { background: #fafcff; }
+  .modern-table tbody td { padding: 13px 20px; font-size: 0.875rem; color: #2d3748; vertical-align: middle; }
+  .modern-table tbody td strong { font-weight: 600; color: #1a2332; }
+
+  .dept-chip {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #eff4ff;
+    color: #3b7dd8;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+</style>
+
+<div class="page-header">
+  <h2>Doctor Specialisation</h2>
+  <p>Departments and their assigned doctors.</p>
+</div>
+
+<div class="data-card">
+  <div class="data-card-header">
+    <h6>Department & Doctors</h6>
+  </div>
+  <div class="table-responsive">
+    <table class="modern-table">
+      <thead>
+        <tr>
+          <th>Department</th>
+          <th>Doctor Name</th>
+          <th>Mobile</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in doctors %}
+        <tr>
+          <td><span class="dept-chip">{{d.department}}</span></td>
+          <td><strong>{{d.get_name}}</strong></td>
+          <td>{{d.mobile}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content %}

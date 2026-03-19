@@ -1,0 +1,90 @@
+{% extends 'hospital/homebase.html' %}
+{% block content %}
+
+<div class="container mt-5 mb-5">
+    <div class="card shadow-lg border-0" style="border-radius: 20px; overflow: hidden;">
+        
+        <div class="card-header {% if 'EMERGENCY' in data.schedule or '🚨' in data.medicine %}bg-danger{% else %}bg-primary{% endif %} text-white p-4">
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <h3 class="mb-0">
+                        <i class="fas {% if 'EMERGENCY' in data.schedule %}fa-exclamation-triangle{% else %}fa-file-medical-alt{% endif %}"></i> 
+                        Your AI Health Summary
+                    </h3>
+                    <p class="mb-0 opacity-75">Patient: <strong>{{ patient_name }}</strong> | Mobile: {{ patient_mobile }}</p>
+                </div>
+                <div class="col-md-5 text-md-right">
+                    <p class="mb-0 small">Session ID: {{ request.session.session_key|truncatechars:10 }}</p>
+                    <small>Date: {{ data.date }}</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-5">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5 class="text-muted">Diagnosis / Recommendation</h5>
+                    <h1 class="{% if 'EMERGENCY' in data.schedule %}text-danger{% else %}text-primary{% endif %} font-weight-bold">
+                        {{ data.medicine }}
+                    </h1> 
+                    <p class="lead text-dark" style="font-weight: 500;">{{ data.details }}</p>
+                </div>
+                <div class="col-md-4 text-md-right">
+                    <h5 class="text-muted">Prescription Date</h5>
+                    <p class="badge badge-light p-2" style="font-size: 1rem;">{{ data.date }}</p>
+                </div>
+            </div>
+            
+            <hr class="my-4">
+
+            <div class="my-4">
+                <h5><i class="fas fa-clock text-warning"></i> Intake / Action Schedule</h5>
+                <div class="alert {% if 'EMERGENCY' in data.schedule %}alert-danger{% else %}alert-info{% endif %}" 
+                     style="font-size: 1.3rem; border-left: 8px solid;">
+                    <strong>Schedule:</strong> {{ data.schedule }}
+                </div>
+            </div>
+
+            <div class="my-4 p-4 bg-light" style="border-left: 5px solid {% if 'EMERGENCY' in data.schedule %}#dc3545{% else %}#ffcc00{% endif %}; border-radius: 5px;">
+                <h5>
+                    <i class="fas fa-sticky-note {% if 'EMERGENCY' in data.schedule %}text-danger{% else %}text-primary{% endif %}"></i> 
+                    Recovery & Safety Note
+                </h5>
+                <p class="mb-0" style="font-size: 1.1rem;">{{ data.note }}</p>
+            </div>
+
+            <div class="mt-5 text-center">
+                {% if "EMERGENCY" in data.schedule %}
+                    <a href="https://www.google.com/maps/search/hospital+near+me" target="_blank" class="btn btn-danger btn-lg rounded-pill px-5 shadow pulse-animation">
+                        <i class="fas fa-map-marker-alt"></i> Find Nearest Zydus ER
+                    </a>
+                {% else %}
+                    <a href="/patientclick" class="btn btn-primary btn-lg rounded-pill px-5 shadow">
+                        <i class="fas fa-user-md"></i> Book Official Appointment
+                    </a>
+                {% endif %}
+                
+                <button onclick="window.print()" class="btn btn-outline-secondary btn-lg rounded-pill ml-2">
+                    <i class="fas fa-print"></i> Print Card
+                </button>
+            </div>
+        </div>
+        
+        <div class="card-footer bg-white text-center text-muted small py-3">
+            Disclaimer: AI suggestions are for preliminary guidance. In case of severe pain or bleeding, visit the ER immediately.
+        </div>
+    </div>
+</div>
+
+<style>
+    .pulse-animation {
+        animation: pulse-red 2s infinite;
+    }
+    @keyframes pulse-red {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(220, 53, 69, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+    }
+</style>
+
+{% endblock %}

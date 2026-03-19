@@ -1,0 +1,166 @@
+{% extends 'hospital/admin_base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<style>
+  .page-header { margin-bottom: 24px; }
+  .page-header h2 { font-size: 1.5rem; font-weight: 700; color: #1a2332; margin-bottom: 4px; }
+  .page-header p { color: #6b7c93; font-size: 0.88rem; text-align: left; }
+
+  .form-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+    max-width: 820px;
+  }
+
+  .form-card-header {
+    padding: 18px 28px;
+    border-bottom: 1px solid #f0f4f8;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .form-card-header .header-icon {
+    width: 40px; height: 40px;
+    background: #ecfdf5;
+    color: #059669;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+
+  .form-card-header h5 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a2332;
+    margin: 0;
+  }
+
+  .form-card-body { padding: 28px; }
+
+  .form-section-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6b7c93;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .form-group label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+  }
+
+  .form-control {
+    border-radius: 10px !important;
+    border: 1.5px solid #e2e8f0 !important;
+    padding: 10px 14px !important;
+    font-size: 0.9rem !important;
+    color: #1a2332 !important;
+    transition: all 0.2s !important;
+    background: #fafbfc !important;
+  }
+
+  .form-control:focus {
+    border-color: #059669 !important;
+    box-shadow: 0 0 0 3px rgba(5,150,105,0.1) !important;
+    background: #fff !important;
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, #2ed8b6, #059669);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 32px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 14px rgba(5,150,105,0.3);
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(5,150,105,0.4);
+  }
+</style>
+
+<div class="page-header">
+  <h2>Update Patient Details</h2>
+  <p>Edit the patient's personal and medical information below.</p>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="form-card">
+    <div class="form-card-header">
+      <div class="header-icon"><i class="fas fa-user-injured"></i></div>
+      <h5>Update Patient Details</h5>
+    </div>
+    <div class="form-card-body">
+      <div class="form-section-label">Personal Information</div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>First Name</label>
+            {% render_field userForm.first_name class="form-control" placeholder="First Name" %}
+          </div>
+          <div class="form-group">
+            <label>Username</label>
+            {% render_field userForm.username class="form-control" placeholder="Username" %}
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            {% render_field patientForm.address class="form-control" placeholder="Address" %}
+          </div>
+          <div class="form-group">
+            <label>Symptoms</label>
+            {% render_field patientForm.symptoms class="form-control" placeholder="Symptoms" %}
+          </div>
+          <div class="form-group">
+            <label>Profile Picture</label>
+            {% render_field patientForm.profile_pic class="form-control" %}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Last Name</label>
+            {% render_field userForm.last_name class="form-control" placeholder="Last Name" %}
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            {% render_field userForm.password class="form-control" placeholder="Password" %}
+          </div>
+          <div class="form-group">
+            <label>Mobile</label>
+            {% render_field patientForm.mobile class="form-control" placeholder="Mobile" %}
+          </div>
+          <div class="form-group">
+            <label>Assigned Doctor</label>
+            {% render_field patientForm.assignedDoctorId class="form-control" placeholder="Doctor" %}
+          </div>
+        </div>
+      </div>
+      <div class="mt-2">
+        <button type="submit" class="btn-submit">
+          <i class="fas fa-save"></i> Update Patient
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock content %}
