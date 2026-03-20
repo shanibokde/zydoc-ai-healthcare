@@ -26,17 +26,19 @@ from django.http import JsonResponse
 import json
 from django.db import IntegrityError
 from django.contrib import messages
+import os
+from dotenv import load_dotenv
 
-
+load_dotenv()
 
 
 def get_db_connection():
     return psycopg2.connect(
-        dbname="medical_db",
-        user="postgres",
-        password="shani12",
-        host="localhost",
-        port="5432"
+        dbname=os.getenv("AI_DB_NAME"),
+        user=os.getenv("AI_DB_USER"),
+        password=os.getenv("AI_DB_PASS"),
+        host=os.getenv("AI_DB_HOST"),
+        port=os.getenv("AI_DB_PORT")
     )
 
 try:
