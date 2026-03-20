@@ -13,18 +13,9 @@ class MedicalChatbot:
         self.descriptions = pd.read_csv(os.path.join(data_path, 'symptom_Description.csv'))
         self.precausions = pd.read_csv(os.path.join(data_path, 'symptom_precaution.csv'))
 
-        # --- THE FIX: Wrap the loading in a safety catch ---
-        try:
-            vector_data = np.load(os.path.join(self.base_path, 'symptom_vectors.npy'), allow_pickle=True).item()
-            self.symptom_labels = vector_data['labels']
-            self.symptom_vectors = vector_data['matrix']
-            self.vectors_loaded = True
-        except (ModuleNotFoundError, AttributeError, ImportError, Exception) as e:
-            print(f"AI Warning: Could not load symptom_vectors.npy due to: {e}")
-            self.symptom_labels = []
-            self.symptom_vectors = None
-            self.vectors_loaded = False
-        # ----------------------------------------------------
+        vector_data = np.load(os.path.join(self.base_path, 'symptom_vectors.npy'), allow_pickle=True).item()
+        self.symptom_labels = vector_data['labels']
+        self.symptom_vectors = vector_data['matrix']
 
         self.model = SentenceTransformer('all-MiniLM-L6-v2')
         self.active_symptoms = [] # This must be kept in sync with the session
